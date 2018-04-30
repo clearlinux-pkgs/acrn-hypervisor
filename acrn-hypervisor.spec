@@ -4,7 +4,7 @@
 #
 Name     : acrn-hypervisor
 Version  : 0.1.rc4
-Release  : 7
+Release  : 8
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/v0.1-rc4.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/v0.1-rc4.tar.gz
 Summary  : No detailed summary available
