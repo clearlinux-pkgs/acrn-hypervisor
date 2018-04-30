@@ -4,7 +4,7 @@
 #
 Name     : acrn-hypervisor
 Version  : 0.1.rc4
-Release  : 6
+Release  : 7
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/v0.1-rc4.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/v0.1-rc4.tar.gz
 Summary  : No detailed summary available
@@ -16,6 +16,7 @@ BuildRequires : gnu-efi-dev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
+Patch1: 0001-fix-uefi-os-loader-name.patch
 
 %description
 Embedded-Hypervisor
@@ -35,17 +36,18 @@ data components for the acrn-hypervisor package.
 
 %prep
 %setup -q -n acrn-hypervisor-0.1-rc4
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1524072594
+export SOURCE_DATE_EPOCH=1525111070
 make  %{?_smp_mflags} PLATFORM=uefi
 
 %install
-export SOURCE_DATE_EPOCH=1524072594
+export SOURCE_DATE_EPOCH=1525111070
 rm -rf %{buildroot}
 %make_install PLATFORM=uefi
 
