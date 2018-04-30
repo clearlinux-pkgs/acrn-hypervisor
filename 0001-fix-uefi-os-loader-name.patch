@@ -1,0 +1,23 @@
+From 178c68f6d9e8923a5140f017f6fb5576e10a5c46 Mon Sep 17 00:00:00 2001
+From: "VanCutsem, Geoffroy" <geoffroy.vancutsem@intel.com>
+Date: Mon, 30 Apr 2018 12:40:25 -0500
+Subject: [PATCH] fix uefi os loader name
+
+---
+ bsp/uefi/include/bsp/bsp_cfg.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bsp/uefi/include/bsp/bsp_cfg.h b/bsp/uefi/include/bsp/bsp_cfg.h
+index 16ec336..53b145c 100644
+--- a/bsp/uefi/include/bsp/bsp_cfg.h
++++ b/bsp/uefi/include/bsp/bsp_cfg.h
+@@ -48,5 +48,5 @@
+ #define	CONFIG_DMAR_PARSE_ENABLED	1
+ #define	CONFIG_GPU_SBDF		0x00000010	/* 0000:00:02.0 */
+ #define CONFIG_EFI_STUB       1
+-#define CONFIG_UEFI_OS_LOADER_NAME  "\\EFI\\org.clearlinux\\bootloaderx64_origin.efi"
++#define CONFIG_UEFI_OS_LOADER_NAME  "\\EFI\\org.clearlinux\\bootloaderx64.efi"
+ #endif /* BSP_CFG_H */
+-- 
+2.17.0
+
