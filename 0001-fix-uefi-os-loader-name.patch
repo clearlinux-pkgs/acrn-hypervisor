@@ -1,8 +1,16 @@
-From 178c68f6d9e8923a5140f017f6fb5576e10a5c46 Mon Sep 17 00:00:00 2001
-From: "VanCutsem, Geoffroy" <geoffroy.vancutsem@intel.com>
-Date: Mon, 30 Apr 2018 12:40:25 -0500
-Subject: [PATCH] fix uefi os loader name
+From 8e067bfaa3a51d906f51e779cf1b2bf3cd9610dc Mon Sep 17 00:00:00 2001
+From: Geoffroy Van Cutsem <geoffroy.vancutsem@intel.com>
+Date: Mon, 30 Apr 2018 19:14:21 +0200
+Subject: [PATCH] Use Clearlinux standard bootloader
 
+Update the hypervisor to use the standard Clearlinux bootloader.
+This replaces the previous mechanism where the user had to make
+a copy of the bootloader and call it bootloaderx64_origin.efi.
+This is no longer needed and will simplify the instructions for
+how to install the ACRN hypervisor with a Clearlinux-based
+Service OS
+
+Signed-off-by: Geoffroy Van Cutsem <geoffroy.vancutsem@intel.com>
 ---
  bsp/uefi/include/bsp/bsp_cfg.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -18,6 +26,3 @@ index 16ec336..53b145c 100644
 -#define CONFIG_UEFI_OS_LOADER_NAME  "\\EFI\\org.clearlinux\\bootloaderx64_origin.efi"
 +#define CONFIG_UEFI_OS_LOADER_NAME  "\\EFI\\org.clearlinux\\bootloaderx64.efi"
  #endif /* BSP_CFG_H */
--- 
-2.17.0
-
