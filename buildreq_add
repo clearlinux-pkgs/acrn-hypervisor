@@ -2,3 +2,7 @@
 # picked up automatically. One name per line, no whitespace.
 gnu-efi
 gnu-efi-dev
+pkgconfig(uuid)
+pkgconfig(openssl)
+pkgconfig(pciaccess)
+pkgconfig(zlib)

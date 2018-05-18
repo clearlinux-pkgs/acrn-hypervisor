@@ -1,0 +1,6 @@
+libc.so.6
+libcrypto.so.1.0.0
+libpciaccess.so.0
+libpthread.so.0
+librt.so.1
+libuuid.so.1
