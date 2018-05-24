@@ -1,4 +1,0 @@
-0001-samples-move-samples-to-specifi-platform-diretory.patch
-0002-hypervisor-install-acrn.efi-to-usr-lib.patch
-0003-hypervisor-install-acrn.32.out-to-usr-lib-acrn-acrn..patch
-0004-Makefile-add-a-target-to-build-sbl-hypervisor.patch
