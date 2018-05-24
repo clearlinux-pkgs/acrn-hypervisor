@@ -1,0 +1,44 @@
+From 629b6e4df1eb686359e2936cfcc7990b051b327b Mon Sep 17 00:00:00 2001
+From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+Date: Thu, 24 May 2018 03:36:32 -0500
+Subject: [PATCH 2/3] hypervisor: install acrn.efi to /usr/lib
+
+acrn.efi is a binary and need to be installed to /usr/lib instead of
+/usr/share.
+
+Suggested-by: Arzhan Kinzhalin <arzhan.i.kinzhalin@intel.com>
+Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+---
+ doc/getting_started/index.rst    | 2 +-
+ hypervisor/bsp/uefi/efi/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/doc/getting_started/index.rst b/doc/getting_started/index.rst
+index 5c48c1f..f3e2042 100644
+--- a/doc/getting_started/index.rst
++++ b/doc/getting_started/index.rst
+@@ -125,7 +125,7 @@ partition. Follow these steps:
+    .. code-block:: none
+ 
+       # mkdir /mnt/EFI/acrn
+-      # cp /usr/share/acrn/acrn.efi /mnt/EFI/acrn/
++      # cp /usr/lib/acrn/acrn.efi /mnt/EFI/acrn/
+ 
+ #. Configure the EFI firmware to boot the ACRN hypervisor by default
+ 
+diff --git a/hypervisor/bsp/uefi/efi/Makefile b/hypervisor/bsp/uefi/efi/Makefile
+index 12f6d80..abf149a 100644
+--- a/hypervisor/bsp/uefi/efi/Makefile
++++ b/hypervisor/bsp/uefi/efi/Makefile
+@@ -92,7 +92,7 @@ all: $(EFIBIN)
+ 	$(OBJCOPY)  --add-section .hv="$(HV_OBJDIR)/$(HV_FILE).bin"  --change-section-vma .hv=0x6e000 --set-section-flags .hv=alloc,data,contents,load  --section-alignment 0x1000 $(EFI_OBJDIR)/boot.efi  $(EFIBIN)
+ 
+ install: $(EFIBIN) install-conf
+-	install -D $(EFIBIN) $(DESTDIR)/usr/share/acrn/$(HV_FILE).efi
++	install -D $(EFIBIN) $(DESTDIR)/usr/lib/acrn/$(HV_FILE).efi
+ 
+ $(EFIBIN): $(BOOT)
+ 
+-- 
+2.17.0
+

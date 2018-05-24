@@ -1,0 +1,33 @@
+From 674ea4a643ce1b429397d3a8853ab2112780b23d Mon Sep 17 00:00:00 2001
+From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+Date: Thu, 24 May 2018 03:45:21 -0500
+Subject: [PATCH 3/3] hypervisor: install acrn.32.out to /usr/lib/acrn/acrn.sbl
+
+Add a target in the make file to install the 32bit ELF acrn binary
+and rename to acrn.sbl
+
+Suggested-by: Arzhan Kinzhalin <arzhan.i.kinzhalin@intel.com>
+Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+---
+ hypervisor/Makefile | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hypervisor/Makefile b/hypervisor/Makefile
+index a56b614..540d50b 100644
+--- a/hypervisor/Makefile
++++ b/hypervisor/Makefile
+@@ -185,6 +185,11 @@ install: efi
+ 	make -C bsp/uefi/efi HV_OBJDIR=$(HV_OBJDIR) RELEASE=$(RELEASE) install
+ endif
+ 
++ifeq ($(PLATFORM), sbl)
++install: $(VERSION) $(HV_OBJDIR)/$(HV_FILE).32.out
++	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl
++endif
++
+ $(HV_OBJDIR)/$(HV_FILE).32.out: $(HV_OBJDIR)/$(HV_FILE).out
+ 	$(OBJCOPY) -S --section-alignment=0x1000 -O elf32-i386 $< $@
+ 
+-- 
+2.17.0
+

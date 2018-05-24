@@ -6,3 +6,7 @@ pkgconfig(uuid)
 pkgconfig(openssl)
 pkgconfig(pciaccess)
 pkgconfig(zlib)
+libevent-dev
+libxml2-dev
+telemetrics-client-dev
+systemd-dev
