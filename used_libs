@@ -1,6 +1,9 @@
 libc.so.6
 libcrypto.so.1.0.0
+libevent-2.1.so.6
 libpciaccess.so.0
 libpthread.so.0
 librt.so.1
+libsystemd.so.0
 libuuid.so.1
+libxml2.so.2
