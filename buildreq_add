@@ -10,3 +10,4 @@ libevent-dev
 libxml2-dev
 telemetrics-client-dev
 systemd-dev
+libusb-dev
