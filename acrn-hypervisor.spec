@@ -4,7 +4,7 @@
 #
 Name     : acrn-hypervisor
 Version  : 2018w23.1.180000p
-Release  : 19
+Release  : 20
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w23.1-180000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w23.1-180000p.tar.gz
 Summary  : No detailed summary available
@@ -12,6 +12,7 @@ Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0
 Requires: acrn-hypervisor-bin
 Requires: acrn-hypervisor-config
+Requires: acrn-hypervisor-autostart
 Requires: acrn-hypervisor-data
 Requires: acpica-unix2
 BuildRequires : gnu-efi
@@ -33,6 +34,14 @@ BuildRequires : telemetrics-client-dev
 This directory contains configuration files to ignore errors found in
 the build and test process which are known to the developers and for
 now can be safely ignored.
+
+%package autostart
+Summary: autostart components for the acrn-hypervisor package.
+Group: Default
+
+%description autostart
+autostart components for the acrn-hypervisor package.
+
 
 %package bin
 Summary: bin components for the acrn-hypervisor package.
@@ -68,18 +77,34 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1528127993
+export SOURCE_DATE_EPOCH=1528174060
 make  %{?_smp_mflags} all sbl-hypervisor
 
 %install
-export SOURCE_DATE_EPOCH=1528127993
+export SOURCE_DATE_EPOCH=1528174060
 rm -rf %{buildroot}
 %make_install install sbl-hypervisor-install
+## make_install_append content
+mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
+ln -s ../usercrash.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/usercrash.service
+ln -s ../prepare.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/prepare.service
+ln -s ../acrnprobe.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
+mkdir -p %{buildroot}/usr/share/clr-service-restart
+ln -sf /usr/lib/systemd/system/usercrash.service %{buildroot}/usr/share/clr-service-restart/usercrash.service
+ln -sf /usr/lib/systemd/system/prepare.service %{buildroot}/usr/share/clr-service-restart/prepare.service
+ln -sf /usr/lib/systemd/system/acrnprobe.service %{buildroot}/usr/share/clr-service-restart/acrnprobe.service
+## make_install_append end
 
 %files
 %defattr(-,root,root,-)
 /usr/lib/acrn/acrn.efi
 /usr/lib/acrn/acrn.sbl
+
+%files autostart
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
+/usr/lib/systemd/system/multi-user.target.wants/prepare.service
+/usr/lib/systemd/system/multi-user.target.wants/usercrash.service
 
 %files bin
 %defattr(-,root,root,-)
@@ -97,6 +122,9 @@ rm -rf %{buildroot}
 
 %files config
 %defattr(-,root,root,-)
+%exclude /usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
+%exclude /usr/lib/systemd/system/multi-user.target.wants/prepare.service
+%exclude /usr/lib/systemd/system/multi-user.target.wants/usercrash.service
 /usr/lib/systemd/system.conf.d/40-watchdog.conf
 /usr/lib/systemd/system/acrnlog.service
 /usr/lib/systemd/system/acrnprobe.service
@@ -112,4 +140,7 @@ rm -rf %{buildroot}
 /usr/share/acrn/samples/nuc/acrn.conf
 /usr/share/acrn/samples/nuc/bridge.sh
 /usr/share/acrn/samples/nuc/launch_uos.sh
+/usr/share/clr-service-restart/acrnprobe.service
+/usr/share/clr-service-restart/prepare.service
+/usr/share/clr-service-restart/usercrash.service
 /usr/share/defaults/telemetrics/acrnprobe.xml
