@@ -1,0 +1,29 @@
+From 1f26a4589363ce3b07f9bcb3d92609df9400c213 Mon Sep 17 00:00:00 2001
+From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+Date: Thu, 7 Jun 2018 13:32:32 -0500
+Subject: [PATCH] cbc_attach: fix systemd service
+
+The service should be launched as: cbc_attach /dev/ttyS2
+
+Suggested-by: Yao, Michael <michael.yao@intel.com>
+Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+---
+ misc/cbc_attach/cbc_attach.service | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/misc/cbc_attach/cbc_attach.service b/misc/cbc_attach/cbc_attach.service
+index 946ddd1..5fb126e 100644
+--- a/misc/cbc_attach/cbc_attach.service
++++ b/misc/cbc_attach/cbc_attach.service
+@@ -5,7 +5,7 @@ After=sysinit.target local.target
+ Before=basic.target
+ 
+ [Service]
+-ExecStart=/usr/bin/cbc_attach -f /dev/ttyS2
++ExecStart=/usr/bin/cbc_attach /dev/ttyS2
+ Restart=always
+ Type=notify
+ 
+-- 
+2.17.1
+
