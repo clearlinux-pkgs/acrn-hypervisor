@@ -1,1 +1,2 @@
 0001-cbc_attach-fix-systemd-service.patch
+0002-Makefile-tools-fix-typo-at-acrn-manager-install.patch
