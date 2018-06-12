@@ -1,0 +1,3 @@
+0001-acrn-bridge-fix-install-target.patch
+0002-acrn-bridge-Do-not-overwrite-system-files.patch
+0003-acrn-bridge-improve-systemd-network-units.patch
