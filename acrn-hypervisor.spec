@@ -4,7 +4,7 @@
 #
 Name     : acrn-hypervisor
 Version  : 2018w24.1.170000p
-Release  : 25
+Release  : 26
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w24.1-170000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w24.1-170000p.tar.gz
 Summary  : No detailed summary available
@@ -32,6 +32,9 @@ BuildRequires : telemetrics-client-dev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
+Patch1: 0001-acrn-bridge-fix-install-target.patch
+Patch2: 0002-acrn-bridge-Do-not-overwrite-system-files.patch
+Patch3: 0003-acrn-bridge-improve-systemd-network-units.patch
 
 %description
 This directory contains configuration files to ignore errors found in
@@ -74,17 +77,20 @@ data components for the acrn-hypervisor package.
 
 %prep
 %setup -q -n acrn-hypervisor-acrn-2018w24.1-170000p
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1528790453
+export SOURCE_DATE_EPOCH=1528790813
 make  %{?_smp_mflags} all sbl-hypervisor
 
 %install
-export SOURCE_DATE_EPOCH=1528790453
+export SOURCE_DATE_EPOCH=1528790813
 rm -rf %{buildroot}
 %make_install install sbl-hypervisor-install
 ## make_install_append content
@@ -136,6 +142,10 @@ ln -sf /usr/lib/systemd/system/cbc_lifecycle.service %{buildroot}/usr/share/clr-
 %exclude /usr/lib/systemd/system/multi-user.target.wants/cbc_lifecycle.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/prepare.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/usercrash.service
+/usr/lib/systemd/network/50-acrn.netdev
+/usr/lib/systemd/network/50-acrn.network
+/usr/lib/systemd/network/50-acrn_tap0.netdev
+/usr/lib/systemd/network/50-eth.network
 /usr/lib/systemd/system.conf.d/40-watchdog.conf
 /usr/lib/systemd/system/acrnlog.service
 /usr/lib/systemd/system/acrnprobe.service
