@@ -5,6 +5,7 @@ gnu-efi-dev
 libevent-dev
 libusb-dev
 libxml2-dev
+pip
 pkgconfig(openssl)
 pkgconfig(pciaccess)
 pkgconfig(uuid)
