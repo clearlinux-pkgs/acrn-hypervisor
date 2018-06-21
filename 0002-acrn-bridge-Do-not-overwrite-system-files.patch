@@ -1,0 +1,27 @@
+From b3ec5c55f9895a7ee782cc8df522df02899534b3 Mon Sep 17 00:00:00 2001
+From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+Date: Tue, 12 Jun 2018 01:53:24 -0500
+Subject: [PATCH 2/3] acrn-bridge: Do not overwrite system files
+
+We can not overwrite system files, there are others ways to overwrite
+configuration.
+
+Fixes: b7ad7052bd42 ("convert bridge creation to service")
+Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+---
+ tools/acrnbridge/Makefile | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/tools/acrnbridge/Makefile b/tools/acrnbridge/Makefile
+index ec5f8c3..dae5c00 100644
+--- a/tools/acrnbridge/Makefile
++++ b/tools/acrnbridge/Makefile
+@@ -14,5 +14,3 @@ install:
+ 	install -p -D -m 0644 $(OUT_DIR)/acrn.network $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network
+ 	install -p -D -m 0644 $(OUT_DIR)/acrn_tap0.netdev $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network
+ 	install -p -D -m 0644 $(OUT_DIR)/eth.network $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network
+-	ln -sf /dev/null $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network/80-dhcp.network
+-	ln -sf /dev/null $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network/80-virtual.network
+-- 
+2.17.1
+
