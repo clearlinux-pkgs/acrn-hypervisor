@@ -4,7 +4,7 @@
 #
 Name     : acrn-hypervisor
 Version  : 2018w27.4.140000p
-Release  : 39
+Release  : 40
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w27.4-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w27.4-140000p.tar.gz
 Summary  : No detailed summary available
@@ -16,6 +16,9 @@ Requires: acrn-hypervisor-autostart
 Requires: acrn-hypervisor-data
 Requires: acrn-hypervisor-license
 Requires: acpica-unix2
+Requires: e2fsprogs-extras
+Requires: gdb
+Requires: telemetrics-client
 BuildRequires : gnu-efi
 BuildRequires : gnu-efi-dev
 BuildRequires : libevent-dev
@@ -94,11 +97,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1530785756
+export SOURCE_DATE_EPOCH=1530833858
 make  %{?_smp_mflags} all sbl-hypervisor
 
 %install
-export SOURCE_DATE_EPOCH=1530785756
+export SOURCE_DATE_EPOCH=1530833858
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/LICENSE
