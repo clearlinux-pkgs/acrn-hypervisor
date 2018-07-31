@@ -1,0 +1,27 @@
+From 8ed98d33b7b532caed1a60076fdb6edfe76180b4 Mon Sep 17 00:00:00 2001
+From: "Xie, nanlin" <nanlin.xie@intel.com>
+Date: Mon, 30 Jul 2018 09:42:51 +0000
+Subject: [PATCH] DM: fix make install issue in auto boot UOS service
+
+fix make install issue
+
+Signed-off-by: Nanlin Xie <nanlin.xie@intel.com>
+---
+ devicemodel/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/devicemodel/Makefile b/devicemodel/Makefile
+index 2839b0c..a5a239f 100644
+--- a/devicemodel/Makefile
++++ b/devicemodel/Makefile
+@@ -184,6 +184,7 @@ install-samples-nuc: $(SAMPLES_NUC)
+ 
+ install-samples-mrb: $(SAMPLES_MRB)
+ 	install -D -t $(DESTDIR)/usr/share/acrn/samples/apl-mrb $^
++	install -d $(DESTDIR)/usr/lib/systemd/system/
+ 	install -p -D -m 0644 ./samples/apl-mrb/acrn_guest.service $(DESTDIR)/usr/lib/systemd/system
+ 
+ install-bios: $(BIOS_BIN)
+-- 
+2.18.0
+
