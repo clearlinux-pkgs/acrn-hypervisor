@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2018w32.1.140000p
-Release  : 57
+Release  : 58
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w32.1-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w32.1-140000p.tar.gz
 Summary  : No detailed summary available
@@ -106,11 +106,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1533576026
+export SOURCE_DATE_EPOCH=1533576443
 make  %{?_smp_mflags} all sbl-hypervisor
 
 %install
-export SOURCE_DATE_EPOCH=1533576026
+export SOURCE_DATE_EPOCH=1533576443
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/LICENSE
@@ -148,26 +148,29 @@ ln -sf /usr/lib/systemd/system/cbc_lifecycle.service %{buildroot}/usr/share/clr-
 
 %files bin
 %defattr(-,root,root,-)
+%exclude /usr/bin/acrnprobe_prepare.sh
+%exclude /usr/bin/usercrash_c
 /usr/bin/acrn-dm
 /usr/bin/acrnctl
 /usr/bin/acrnd
 /usr/bin/acrnlog
 /usr/bin/acrnprobe
-/usr/bin/acrnprobe_prepare.sh
 /usr/bin/acrntrace
 /usr/bin/cbc_attach
 /usr/bin/cbc_lifecycle
 /usr/bin/debugger
-/usr/bin/usercrash_c
 /usr/bin/usercrash_s
 
 %files config
 %defattr(-,root,root,-)
+%exclude /usr/lib/systemd/system/acrnprobe.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/cbc_attach.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/cbc_lifecycle.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/prepare.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/usercrash.service
+%exclude /usr/lib/systemd/system/prepare.service
+%exclude /usr/lib/systemd/system/usercrash.service
 /usr/lib/systemd/network/50-acrn.netdev
 /usr/lib/systemd/network/50-acrn.network
 /usr/lib/systemd/network/50-acrn_tap0.netdev
@@ -176,11 +179,8 @@ ln -sf /usr/lib/systemd/system/cbc_lifecycle.service %{buildroot}/usr/share/clr-
 /usr/lib/systemd/system/acrn_guest.service
 /usr/lib/systemd/system/acrnd.service
 /usr/lib/systemd/system/acrnlog.service
-/usr/lib/systemd/system/acrnprobe.service
 /usr/lib/systemd/system/cbc_attach.service
 /usr/lib/systemd/system/cbc_lifecycle.service
-/usr/lib/systemd/system/prepare.service
-/usr/lib/systemd/system/usercrash.service
 
 %files data
 %defattr(-,root,root,-)

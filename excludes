@@ -1,2 +1,9 @@
 # This file contains the output files that need %exclude. Full path
 # names, one per line.
+/usr/bin/usercrash_c
+/usr/bin/acrnprobe_prepare.sh
+/usr/lib/systemd/system/usercrash.service
+/usr/lib/systemd/system/acrnprobe.service
+
+# EXCLUDED because it executes a shell script
+/usr/lib/systemd/system/prepare.service 
