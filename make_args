@@ -1,1 +1,2 @@
-all sbl-hypervisor
+all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
+-
