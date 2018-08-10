@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2018w32.4.140000p
-Release  : 62
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w32.4-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w32.4-140000p.tar.gz
+Version  : 2018w32.5.140000p
+Release  : 63
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w32.5-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w32.5-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -99,19 +99,19 @@ license components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2018w32.4-140000p
+%setup -q -n acrn-hypervisor-acrn-2018w32.5-140000p
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1533818163
+export SOURCE_DATE_EPOCH=1533900367
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}” \
 -
 
 %install
-export SOURCE_DATE_EPOCH=1533818163
+export SOURCE_DATE_EPOCH=1533900367
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/LICENSE
@@ -157,8 +157,6 @@ ln -sf /usr/lib/systemd/system/cbc_lifecycle.service %{buildroot}/usr/share/clr-
 /usr/bin/acrnlog
 /usr/bin/acrnprobe
 /usr/bin/acrntrace
-/usr/bin/cbc_attach
-/usr/bin/cbc_lifecycle
 /usr/bin/debugger
 /usr/bin/usercrash_s
 
@@ -180,8 +178,6 @@ ln -sf /usr/lib/systemd/system/cbc_lifecycle.service %{buildroot}/usr/share/clr-
 /usr/lib/systemd/system/acrn_guest.service
 /usr/lib/systemd/system/acrnd.service
 /usr/lib/systemd/system/acrnlog.service
-/usr/lib/systemd/system/cbc_attach.service
-/usr/lib/systemd/system/cbc_lifecycle.service
 
 %files data
 %defattr(-,root,root,-)
