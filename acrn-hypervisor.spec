@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2018w32.5.140000p
-Release  : 63
+Release  : 64
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w32.5-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w32.5-140000p.tar.gz
 Summary  : No detailed summary available
@@ -106,12 +106,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1533900367
+export SOURCE_DATE_EPOCH=1533904405
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}” \
 -
 
 %install
-export SOURCE_DATE_EPOCH=1533900367
+export SOURCE_DATE_EPOCH=1533904405
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/LICENSE
@@ -124,14 +124,10 @@ mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
 ln -s ../usercrash.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/usercrash.service
 ln -s ../prepare.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/prepare.service
 ln -s ../acrnprobe.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
-ln -s ../cbc_attach.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/cbc_attach.service
-ln -s ../cbc_lifecycle.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/cbc_lifecycle.service
 mkdir -p %{buildroot}/usr/share/clr-service-restart
 ln -sf /usr/lib/systemd/system/usercrash.service %{buildroot}/usr/share/clr-service-restart/usercrash.service
 ln -sf /usr/lib/systemd/system/prepare.service %{buildroot}/usr/share/clr-service-restart/prepare.service
 ln -sf /usr/lib/systemd/system/acrnprobe.service %{buildroot}/usr/share/clr-service-restart/acrnprobe.service
-ln -sf /usr/lib/systemd/system/cbc_attach.service %{buildroot}/usr/share/clr-service-restart/cbc_attach.service
-ln -sf /usr/lib/systemd/system/cbc_lifecycle.service %{buildroot}/usr/share/clr-service-restart/cbc_lifecycle.service
 ## install_append end
 
 %files
@@ -142,8 +138,6 @@ ln -sf /usr/lib/systemd/system/cbc_lifecycle.service %{buildroot}/usr/share/clr-
 %files autostart
 %defattr(-,root,root,-)
 /usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
-/usr/lib/systemd/system/multi-user.target.wants/cbc_attach.service
-/usr/lib/systemd/system/multi-user.target.wants/cbc_lifecycle.service
 /usr/lib/systemd/system/multi-user.target.wants/prepare.service
 /usr/lib/systemd/system/multi-user.target.wants/usercrash.service
 
@@ -164,8 +158,6 @@ ln -sf /usr/lib/systemd/system/cbc_lifecycle.service %{buildroot}/usr/share/clr-
 %defattr(-,root,root,-)
 %exclude /usr/lib/systemd/system/acrnprobe.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
-%exclude /usr/lib/systemd/system/multi-user.target.wants/cbc_attach.service
-%exclude /usr/lib/systemd/system/multi-user.target.wants/cbc_lifecycle.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/prepare.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/usercrash.service
 %exclude /usr/lib/systemd/system/prepare.service
@@ -192,8 +184,6 @@ ln -sf /usr/lib/systemd/system/cbc_lifecycle.service %{buildroot}/usr/share/clr-
 /usr/share/acrn/samples/nuc/acrn.conf
 /usr/share/acrn/samples/nuc/launch_uos.sh
 /usr/share/clr-service-restart/acrnprobe.service
-/usr/share/clr-service-restart/cbc_attach.service
-/usr/share/clr-service-restart/cbc_lifecycle.service
 /usr/share/clr-service-restart/prepare.service
 /usr/share/clr-service-restart/usercrash.service
 /usr/share/defaults/telemetrics/acrnprobe.xml
