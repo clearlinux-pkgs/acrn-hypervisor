@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2018w33.3.140000p
-Release  : 66
+Release  : 67
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w33.3-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w33.3-140000p.tar.gz
 Summary  : No detailed summary available
@@ -106,18 +106,18 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1534332196
-make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}” RELEASE=1
+export SOURCE_DATE_EPOCH=1534359925
+make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 %install
-export SOURCE_DATE_EPOCH=1534332196
+export SOURCE_DATE_EPOCH=1534359925
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/LICENSE
 cp doc/LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/doc_LICENSE
 cp scripts/kconfig/LICENSE.kconfiglib %{buildroot}/usr/share/doc/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
 cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/doc/acrn-hypervisor/tools_acrn-crashlog_license_header
-%make_install sbl-hypervisor-install RELEASE=1
+%make_install sbl-hypervisor-install
 ## install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
 ln -s ../usercrash.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/usercrash.service
