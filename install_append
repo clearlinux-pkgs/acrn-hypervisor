@@ -2,6 +2,7 @@ mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
 ln -s ../usercrash.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/usercrash.service
 ln -s ../prepare.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/prepare.service
 ln -s ../acrnprobe.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
+ln -s ../acrn_guest.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/acrn_guest.service
 mkdir -p %{buildroot}/usr/share/clr-service-restart
 ln -sf /usr/lib/systemd/system/usercrash.service %{buildroot}/usr/share/clr-service-restart/usercrash.service
 ln -sf /usr/lib/systemd/system/prepare.service %{buildroot}/usr/share/clr-service-restart/prepare.service
