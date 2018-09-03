@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2018w35.5.140000p
-Release  : 80
+Release  : 81
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w35.5-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w35.5-140000p.tar.gz
 Summary  : No detailed summary available
@@ -106,11 +106,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1535714582
+export SOURCE_DATE_EPOCH=1535994051
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 %install
-export SOURCE_DATE_EPOCH=1535714582
+export SOURCE_DATE_EPOCH=1535994051
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/LICENSE
@@ -123,7 +123,6 @@ mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
 ln -s ../usercrash.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/usercrash.service
 ln -s ../prepare.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/prepare.service
 ln -s ../acrnprobe.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
-ln -s ../acrn_guest.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/acrn_guest.service
 mkdir -p %{buildroot}/usr/share/clr-service-restart
 ln -sf /usr/lib/systemd/system/usercrash.service %{buildroot}/usr/share/clr-service-restart/usercrash.service
 ln -sf /usr/lib/systemd/system/prepare.service %{buildroot}/usr/share/clr-service-restart/prepare.service
@@ -137,7 +136,6 @@ ln -sf /usr/lib/systemd/system/acrnprobe.service %{buildroot}/usr/share/clr-serv
 
 %files autostart
 %defattr(-,root,root,-)
-/usr/lib/systemd/system/multi-user.target.wants/acrn_guest.service
 /usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
 /usr/lib/systemd/system/multi-user.target.wants/prepare.service
 /usr/lib/systemd/system/multi-user.target.wants/usercrash.service
@@ -158,7 +156,6 @@ ln -sf /usr/lib/systemd/system/acrnprobe.service %{buildroot}/usr/share/clr-serv
 %files config
 %defattr(-,root,root,-)
 %exclude /usr/lib/systemd/system/acrnprobe.service
-%exclude /usr/lib/systemd/system/multi-user.target.wants/acrn_guest.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/prepare.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/usercrash.service
