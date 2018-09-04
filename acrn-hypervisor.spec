@@ -4,16 +4,15 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2018w35.5.140000p
-Release  : 81
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w35.5-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w35.5-140000p.tar.gz
+Version  : 2018w36.2.140000p
+Release  : 82
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w36.2-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w36.2-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
 Requires: acrn-hypervisor-bin
 Requires: acrn-hypervisor-config
-Requires: acrn-hypervisor-autostart
 Requires: acrn-hypervisor-data
 Requires: acrn-hypervisor-license
 Requires: acpica-unix2
@@ -38,19 +37,12 @@ BuildRequires : telemetrics-client-dev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
+Patch1: 0001-tools-acrn-crashlog-correct-usercrash-wrapper-path.patch
 
 %description
 This directory contains configuration files to ignore errors found in
 the build and test process which are known to the developers and for
 now can be safely ignored.
-
-%package autostart
-Summary: autostart components for the acrn-hypervisor package.
-Group: Default
-
-%description autostart
-autostart components for the acrn-hypervisor package.
-
 
 %package bin
 Summary: bin components for the acrn-hypervisor package.
@@ -99,18 +91,19 @@ license components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2018w35.5-140000p
+%setup -q -n acrn-hypervisor-acrn-2018w36.2-140000p
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1535994051
+export SOURCE_DATE_EPOCH=1536079250
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 %install
-export SOURCE_DATE_EPOCH=1535994051
+export SOURCE_DATE_EPOCH=1536079250
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/LICENSE
@@ -120,13 +113,7 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/doc/acrn-hypervisor
 %make_install sbl-hypervisor-install
 ## install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
-ln -s ../usercrash.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/usercrash.service
-ln -s ../prepare.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/prepare.service
-ln -s ../acrnprobe.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
 mkdir -p %{buildroot}/usr/share/clr-service-restart
-ln -sf /usr/lib/systemd/system/usercrash.service %{buildroot}/usr/share/clr-service-restart/usercrash.service
-ln -sf /usr/lib/systemd/system/prepare.service %{buildroot}/usr/share/clr-service-restart/prepare.service
-ln -sf /usr/lib/systemd/system/acrnprobe.service %{buildroot}/usr/share/clr-service-restart/acrnprobe.service
 ## install_append end
 
 %files
@@ -134,33 +121,22 @@ ln -sf /usr/lib/systemd/system/acrnprobe.service %{buildroot}/usr/share/clr-serv
 /usr/lib/acrn/acrn.efi
 /usr/lib/acrn/acrn.sbl
 
-%files autostart
-%defattr(-,root,root,-)
-/usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
-/usr/lib/systemd/system/multi-user.target.wants/prepare.service
-/usr/lib/systemd/system/multi-user.target.wants/usercrash.service
-
 %files bin
 %defattr(-,root,root,-)
-%exclude /usr/bin/acrnprobe_prepare.sh
-%exclude /usr/bin/usercrash_c
 /usr/bin/acrn-dm
 /usr/bin/acrnctl
 /usr/bin/acrnd
 /usr/bin/acrnlog
 /usr/bin/acrnprobe
+/usr/bin/acrnprobe_prepare.sh
 /usr/bin/acrntrace
 /usr/bin/debugger
+/usr/bin/usercrash-wrapper
+/usr/bin/usercrash_c
 /usr/bin/usercrash_s
 
 %files config
 %defattr(-,root,root,-)
-%exclude /usr/lib/systemd/system/acrnprobe.service
-%exclude /usr/lib/systemd/system/multi-user.target.wants/acrnprobe.service
-%exclude /usr/lib/systemd/system/multi-user.target.wants/prepare.service
-%exclude /usr/lib/systemd/system/multi-user.target.wants/usercrash.service
-%exclude /usr/lib/systemd/system/prepare.service
-%exclude /usr/lib/systemd/system/usercrash.service
 /usr/lib/systemd/network/50-acrn.netdev
 /usr/lib/systemd/network/50-acrn.network
 /usr/lib/systemd/network/50-acrn_tap0.netdev
@@ -169,6 +145,9 @@ ln -sf /usr/lib/systemd/system/acrnprobe.service %{buildroot}/usr/share/clr-serv
 /usr/lib/systemd/system/acrn_guest.service
 /usr/lib/systemd/system/acrnd.service
 /usr/lib/systemd/system/acrnlog.service
+/usr/lib/systemd/system/acrnprobe.service
+/usr/lib/systemd/system/prepare.service
+/usr/lib/systemd/system/usercrash.service
 
 %files data
 %defattr(-,root,root,-)
@@ -182,9 +161,6 @@ ln -sf /usr/lib/systemd/system/acrnprobe.service %{buildroot}/usr/share/clr-serv
 /usr/share/acrn/samples/apl-mrb/sos_bootargs_release.txt
 /usr/share/acrn/samples/nuc/acrn.conf
 /usr/share/acrn/samples/nuc/launch_uos.sh
-/usr/share/clr-service-restart/acrnprobe.service
-/usr/share/clr-service-restart/prepare.service
-/usr/share/clr-service-restart/usercrash.service
 /usr/share/defaults/telemetrics/acrnprobe.xml
 
 %files dev
