@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2018w36.3.140000p
-Release  : 83
+Release  : 84
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w36.3-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w36.3-140000p.tar.gz
 Summary  : No detailed summary available
@@ -97,11 +97,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1536139549
+export SOURCE_DATE_EPOCH=1536147906
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 %install
-export SOURCE_DATE_EPOCH=1536139549
+export SOURCE_DATE_EPOCH=1536147906
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/LICENSE
@@ -121,20 +121,23 @@ mkdir -p %{buildroot}/usr/share/clr-service-restart
 
 %files bin
 %defattr(-,root,root,-)
+%exclude /usr/bin/acrnprobe_prepare.sh
+%exclude /usr/bin/usercrash_c
 /usr/bin/acrn-dm
 /usr/bin/acrnctl
 /usr/bin/acrnd
 /usr/bin/acrnlog
 /usr/bin/acrnprobe
-/usr/bin/acrnprobe_prepare.sh
 /usr/bin/acrntrace
 /usr/bin/debugger
 /usr/bin/usercrash-wrapper
-/usr/bin/usercrash_c
 /usr/bin/usercrash_s
 
 %files config
 %defattr(-,root,root,-)
+%exclude /usr/lib/systemd/system/acrnprobe.service
+%exclude /usr/lib/systemd/system/prepare.service
+%exclude /usr/lib/systemd/system/usercrash.service
 /usr/lib/systemd/network/50-acrn.netdev
 /usr/lib/systemd/network/50-acrn.network
 /usr/lib/systemd/network/50-acrn_tap0.netdev
@@ -143,9 +146,6 @@ mkdir -p %{buildroot}/usr/share/clr-service-restart
 /usr/lib/systemd/system/acrn_guest.service
 /usr/lib/systemd/system/acrnd.service
 /usr/lib/systemd/system/acrnlog.service
-/usr/lib/systemd/system/acrnprobe.service
-/usr/lib/systemd/system/prepare.service
-/usr/lib/systemd/system/usercrash.service
 
 %files data
 %defattr(-,root,root,-)
