@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2018w41.2.140000p
-Release  : 99
+Release  : 100
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w41.2-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w41.2-140000p.tar.gz
 Summary  : No detailed summary available
@@ -37,6 +37,9 @@ BuildRequires : telemetrics-client-dev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
+Patch1: 0001-add-install-debug-target.patch
+Patch2: 0002-add-RELEASE-variable-to-make-command.patch
+Patch3: 0003-makefile-install-debug.patch
 
 %description
 This directory contains configuration files to ignore errors found in
@@ -81,6 +84,14 @@ Provides: acrn-hypervisor-devel = %{version}-%{release}
 dev components for the acrn-hypervisor package.
 
 
+%package extras
+Summary: extras components for the acrn-hypervisor package.
+Group: Default
+
+%description extras
+extras components for the acrn-hypervisor package.
+
+
 %package license
 Summary: license components for the acrn-hypervisor package.
 Group: Default
@@ -91,31 +102,34 @@ license components for the acrn-hypervisor package.
 
 %prep
 %setup -q -n acrn-hypervisor-acrn-2018w41.2-140000p
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1539101039
+export SOURCE_DATE_EPOCH=1539120152
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 %install
-export SOURCE_DATE_EPOCH=1539101039
+export SOURCE_DATE_EPOCH=1539120152
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
 cp doc/LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/doc_LICENSE
 cp scripts/kconfig/LICENSE.kconfiglib %{buildroot}/usr/share/package-licenses/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
 cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/acrn-hypervisor/tools_acrn-crashlog_license_header
-%make_install sbl-hypervisor-install
-## install_append content
-mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
-mkdir -p %{buildroot}/usr/share/clr-service-restart
-## install_append end
+%make_install sbl-hypervisor-install hypervisor-install-debug sbl-hypervisor-install-debug
 
 %files
 %defattr(-,root,root,-)
+%exclude /usr/lib/acrn/acrn.efi.map
+%exclude /usr/lib/acrn/acrn.efi.out
+%exclude /usr/lib/acrn/acrn.sbl.map
+%exclude /usr/lib/acrn/acrn.sbl.out
 /usr/lib/acrn/acrn.efi
 /usr/lib/acrn/acrn.sbl
 
@@ -125,7 +139,13 @@ mkdir -p %{buildroot}/usr/share/clr-service-restart
 /usr/bin/acrnctl
 /usr/bin/acrnd
 /usr/bin/acrnlog
+/usr/bin/acrnprobe
 /usr/bin/acrntrace
+/usr/bin/crashlogctl
+/usr/bin/debugger
+/usr/bin/usercrash-wrapper
+/usr/bin/usercrash_c
+/usr/bin/usercrash_s
 
 %files config
 %defattr(-,root,root,-)
@@ -136,6 +156,9 @@ mkdir -p %{buildroot}/usr/share/clr-service-restart
 /usr/lib/systemd/system/acrn_guest.service
 /usr/lib/systemd/system/acrnd.service
 /usr/lib/systemd/system/acrnlog.service
+/usr/lib/systemd/system/acrnprobe.service
+/usr/lib/systemd/system/usercrash.service
+/usr/lib/tmpfiles.d/acrn-crashlog-dirs.conf
 
 %files data
 %defattr(-,root,root,-)
@@ -144,20 +167,30 @@ mkdir -p %{buildroot}/usr/share/clr-service-restart
 /usr/share/acrn/bios/VSBL.bin
 /usr/share/acrn/bios/VSBL_debug.bin
 /usr/share/acrn/bios/changelog.txt
+/usr/share/acrn/crashlog/40-watchdog.conf
+/usr/share/acrn/crashlog/80-coredump.conf
 /usr/share/acrn/samples/apl-mrb/acrn_guest.service
 /usr/share/acrn/samples/apl-mrb/launch_uos.sh
 /usr/share/acrn/samples/apl-mrb/sos_bootargs_debug.txt
 /usr/share/acrn/samples/apl-mrb/sos_bootargs_release.txt
 /usr/share/acrn/samples/nuc/acrn.conf
 /usr/share/acrn/samples/nuc/launch_uos.sh
+/usr/share/defaults/telemetrics/acrnprobe.xml
 
 %files dev
 %defattr(-,root,root,-)
 /usr/include/acrn/acrn_mngr.h
 /usr/lib64/*.a
 
+%files extras
+%defattr(-,root,root,-)
+/usr/lib/acrn/acrn.efi.map
+/usr/lib/acrn/acrn.efi.out
+/usr/lib/acrn/acrn.sbl.map
+/usr/lib/acrn/acrn.sbl.out
+
 %files license
-%defattr(0644,root,root,0755)
+%defattr(-,root,root,-)
 /usr/share/package-licenses/acrn-hypervisor/LICENSE
 /usr/share/package-licenses/acrn-hypervisor/doc_LICENSE
 /usr/share/package-licenses/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
