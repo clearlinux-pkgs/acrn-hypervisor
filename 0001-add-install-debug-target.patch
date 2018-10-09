@@ -1,0 +1,36 @@
+From 77476277d2bf933317f63994a2ff5dfaa2dc47ef Mon Sep 17 00:00:00 2001
+From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+Date: Tue, 9 Oct 2018 11:36:42 -0500
+Subject: [PATCH 1/2] add install-debug target
+
+---
+ hypervisor/Makefile | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hypervisor/Makefile b/hypervisor/Makefile
+index 7495565c..7830a611 100644
+--- a/hypervisor/Makefile
++++ b/hypervisor/Makefile
+@@ -235,11 +235,19 @@ efi: $(HV_OBJDIR)/$(HV_FILE).bin
+ 
+ install: efi
+ 	make -C bsp/uefi/efi HV_OBJDIR=$(HV_OBJDIR) install
++
++install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
++	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).efi.out
++	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).efi.map
+ endif
+ 
+ ifeq ($(CONFIG_PLATFORM), sbl)
+ install: $(VERSION) $(HV_OBJDIR)/$(HV_FILE).32.out
+ 	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl
++
++install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
++	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl.out
++	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl.map
+ endif
+ 
+ $(HV_OBJDIR)/$(HV_FILE).32.out: $(HV_OBJDIR)/$(HV_FILE).out
+-- 
+2.19.1
+

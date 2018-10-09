@@ -1,0 +1,22 @@
+From b1dba35ed0950130ba46c348e7188277f3da8c6f Mon Sep 17 00:00:00 2001
+From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+Date: Tue, 9 Oct 2018 11:41:58 -0500
+Subject: [PATCH 2/2] add RELEASE variable to make command
+
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 7da689dc..e45451d8 100644
+--- a/Makefile
++++ b/Makefile
+@@ -56,4 +56,4 @@ devicemodel-install:
+ 	make -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) install
+ 
+ tools-install:
+-	make -C $(T)/tools OUT_DIR=$(TOOLS_OUT) install
++	make -C $(T)/tools OUT_DIR=$(TOOLS_OUT) RELEASE=$(RELEASE) install
+-- 
+2.19.1
+
