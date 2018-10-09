@@ -4,17 +4,17 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2018w41.1.140000p
-Release  : 98
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w41.1-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w41.1-140000p.tar.gz
+Version  : 2018w41.2.140000p
+Release  : 99
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w41.2-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w41.2-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
-Requires: acrn-hypervisor-bin
-Requires: acrn-hypervisor-config
-Requires: acrn-hypervisor-data
-Requires: acrn-hypervisor-license
+Requires: acrn-hypervisor-bin = %{version}-%{release}
+Requires: acrn-hypervisor-config = %{version}-%{release}
+Requires: acrn-hypervisor-data = %{version}-%{release}
+Requires: acrn-hypervisor-license = %{version}-%{release}
 Requires: acpica-unix2
 Requires: e2fsprogs-extras
 Requires: gdb
@@ -46,9 +46,9 @@ now can be safely ignored.
 %package bin
 Summary: bin components for the acrn-hypervisor package.
 Group: Binaries
-Requires: acrn-hypervisor-data
-Requires: acrn-hypervisor-config
-Requires: acrn-hypervisor-license
+Requires: acrn-hypervisor-data = %{version}-%{release}
+Requires: acrn-hypervisor-config = %{version}-%{release}
+Requires: acrn-hypervisor-license = %{version}-%{release}
 
 %description bin
 bin components for the acrn-hypervisor package.
@@ -73,9 +73,9 @@ data components for the acrn-hypervisor package.
 %package dev
 Summary: dev components for the acrn-hypervisor package.
 Group: Development
-Requires: acrn-hypervisor-bin
-Requires: acrn-hypervisor-data
-Provides: acrn-hypervisor-devel
+Requires: acrn-hypervisor-bin = %{version}-%{release}
+Requires: acrn-hypervisor-data = %{version}-%{release}
+Provides: acrn-hypervisor-devel = %{version}-%{release}
 
 %description dev
 dev components for the acrn-hypervisor package.
@@ -90,24 +90,24 @@ license components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2018w41.1-140000p
+%setup -q -n acrn-hypervisor-acrn-2018w41.2-140000p
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1539008719
+export SOURCE_DATE_EPOCH=1539101039
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 %install
-export SOURCE_DATE_EPOCH=1539008719
+export SOURCE_DATE_EPOCH=1539101039
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/acrn-hypervisor
-cp LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/LICENSE
-cp doc/LICENSE %{buildroot}/usr/share/doc/acrn-hypervisor/doc_LICENSE
-cp scripts/kconfig/LICENSE.kconfiglib %{buildroot}/usr/share/doc/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
-cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/doc/acrn-hypervisor/tools_acrn-crashlog_license_header
+mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
+cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
+cp doc/LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/doc_LICENSE
+cp scripts/kconfig/LICENSE.kconfiglib %{buildroot}/usr/share/package-licenses/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
+cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/acrn-hypervisor/tools_acrn-crashlog_license_header
 %make_install sbl-hypervisor-install
 ## install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
@@ -157,8 +157,8 @@ mkdir -p %{buildroot}/usr/share/clr-service-restart
 /usr/lib64/*.a
 
 %files license
-%defattr(-,root,root,-)
-/usr/share/doc/acrn-hypervisor/LICENSE
-/usr/share/doc/acrn-hypervisor/doc_LICENSE
-/usr/share/doc/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
-/usr/share/doc/acrn-hypervisor/tools_acrn-crashlog_license_header
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/acrn-hypervisor/LICENSE
+/usr/share/package-licenses/acrn-hypervisor/doc_LICENSE
+/usr/share/package-licenses/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
+/usr/share/package-licenses/acrn-hypervisor/tools_acrn-crashlog_license_header
