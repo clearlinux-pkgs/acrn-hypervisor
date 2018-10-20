@@ -8,10 +8,10 @@ Subject: [PATCH 1/2] add install-debug target
  1 file changed, 8 insertions(+)
 
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index 7495565c..7830a611 100644
+index de222dba..4ffe1c78 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
-@@ -235,11 +235,19 @@ efi: $(HV_OBJDIR)/$(HV_FILE).bin
+@@ -236,11 +236,19 @@ efi: $(HV_OBJDIR)/$(HV_FILE).bin
  
  install: efi
  	make -C bsp/uefi/efi HV_OBJDIR=$(HV_OBJDIR) install
@@ -22,7 +22,7 @@ index 7495565c..7830a611 100644
  endif
  
  ifeq ($(CONFIG_PLATFORM), sbl)
- install: $(VERSION) $(HV_OBJDIR)/$(HV_FILE).32.out
+ install: $(HV_OBJDIR)/$(HV_FILE).32.out
  	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl
 +
 +install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
@@ -33,4 +33,3 @@ index 7495565c..7830a611 100644
  $(HV_OBJDIR)/$(HV_FILE).32.out: $(HV_OBJDIR)/$(HV_FILE).out
 -- 
 2.19.1
-
