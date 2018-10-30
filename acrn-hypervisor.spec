@@ -5,14 +5,13 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2018w44.2.140000p
-Release  : 108
+Release  : 109
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w44.2-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w44.2-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
 Requires: acrn-hypervisor-bin = %{version}-%{release}
-Requires: acrn-hypervisor-config = %{version}-%{release}
 Requires: acrn-hypervisor-data = %{version}-%{release}
 Requires: acrn-hypervisor-license = %{version}-%{release}
 Requires: acrn-hypervisor-services = %{version}-%{release}
@@ -51,20 +50,11 @@ now can be safely ignored.
 Summary: bin components for the acrn-hypervisor package.
 Group: Binaries
 Requires: acrn-hypervisor-data = %{version}-%{release}
-Requires: acrn-hypervisor-config = %{version}-%{release}
 Requires: acrn-hypervisor-license = %{version}-%{release}
 Requires: acrn-hypervisor-services = %{version}-%{release}
 
 %description bin
 bin components for the acrn-hypervisor package.
-
-
-%package config
-Summary: config components for the acrn-hypervisor package.
-Group: Default
-
-%description config
-config components for the acrn-hypervisor package.
 
 
 %package data
@@ -121,18 +111,18 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540903012
-make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
+export SOURCE_DATE_EPOCH=1540927828
+make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}” RELEASE=1
 
 %install
-export SOURCE_DATE_EPOCH=1540903012
+export SOURCE_DATE_EPOCH=1540927828
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
 cp doc/LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/doc_LICENSE
 cp scripts/kconfig/LICENSE.kconfiglib %{buildroot}/usr/share/package-licenses/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
 cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/acrn-hypervisor/tools_acrn-crashlog_license_header
-%make_install sbl-hypervisor-install hypervisor-install-debug sbl-hypervisor-install-debug
+%make_install sbl-hypervisor-install hypervisor-install-debug sbl-hypervisor-install-debug RELEASE=1
 
 %files
 %defattr(-,root,root,-)
@@ -149,17 +139,7 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 /usr/bin/acrnctl
 /usr/bin/acrnd
 /usr/bin/acrnlog
-/usr/bin/acrnprobe
 /usr/bin/acrntrace
-/usr/bin/crashlogctl
-/usr/bin/debugger
-/usr/bin/usercrash-wrapper
-/usr/bin/usercrash_c
-/usr/bin/usercrash_s
-
-%files config
-%defattr(-,root,root,-)
-/usr/lib/tmpfiles.d/acrn-crashlog-dirs.conf
 
 %files data
 %defattr(-,root,root,-)
@@ -168,8 +148,6 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 /usr/share/acrn/bios/VSBL.bin
 /usr/share/acrn/bios/VSBL_debug.bin
 /usr/share/acrn/bios/changelog.txt
-/usr/share/acrn/crashlog/40-watchdog.conf
-/usr/share/acrn/crashlog/80-coredump.conf
 /usr/share/acrn/samples/apl-mrb/acrn_guest.service
 /usr/share/acrn/samples/apl-mrb/launch_uos.sh
 /usr/share/acrn/samples/apl-mrb/mrb-env-setup.sh
@@ -177,7 +155,6 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 /usr/share/acrn/samples/apl-mrb/sos_bootargs_release.txt
 /usr/share/acrn/samples/nuc/acrn.conf
 /usr/share/acrn/samples/nuc/launch_uos.sh
-/usr/share/defaults/telemetrics/acrnprobe.xml
 
 %files dev
 %defattr(-,root,root,-)
@@ -207,5 +184,3 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 /usr/lib/systemd/system/acrn_guest.service
 /usr/lib/systemd/system/acrnd.service
 /usr/lib/systemd/system/acrnlog.service
-/usr/lib/systemd/system/acrnprobe.service
-/usr/lib/systemd/system/usercrash.service
