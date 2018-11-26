@@ -1,5 +1,5 @@
 PKG_NAME := acrn-hypervisor
-URL = https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w47.5-173000p.tar.gz
+URL = https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w48.1-173000p.tar.gz
 ARCHIVES = 
 
 include ../common/Makefile.common
