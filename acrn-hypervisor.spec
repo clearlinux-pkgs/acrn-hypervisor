@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2018w49.4.140000p
-Release  : 125
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w49.4-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w49.4-140000p.tar.gz
+Version  : 2018w49.5.140000p
+Release  : 126
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w49.5-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w49.5-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -111,7 +111,7 @@ services components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2018w49.4-140000p
+%setup -q -n acrn-hypervisor-acrn-2018w49.5-140000p
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -121,12 +121,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1544175234
+export SOURCE_DATE_EPOCH=1544197422
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
-
 %install
-export SOURCE_DATE_EPOCH=1544175234
+export SOURCE_DATE_EPOCH=1544197422
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
@@ -143,10 +142,6 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 %exclude /usr/lib/acrn/acrn.sbl.out
 /usr/lib/acrn/acrn.efi
 /usr/lib/acrn/acrn.sbl
-/usr/lib/systemd/network/50-acrn.netdev
-/usr/lib/systemd/network/50-acrn.network
-/usr/lib/systemd/network/50-acrn_tap0.netdev
-/usr/lib/systemd/network/50-eth.network
 
 %files bin
 %defattr(-,root,root,-)
@@ -205,6 +200,10 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 
 %files services
 %defattr(-,root,root,-)
+/usr/lib/systemd/network/50-acrn.netdev
+/usr/lib/systemd/network/50-acrn.network
+/usr/lib/systemd/network/50-acrn_tap0.netdev
+/usr/lib/systemd/network/50-eth.network
 /usr/lib/systemd/system/acrn_guest.service
 /usr/lib/systemd/system/acrnd.service
 /usr/lib/systemd/system/acrnlog.service
