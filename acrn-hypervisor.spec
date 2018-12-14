@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 0.4
-Release  : 130
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/v0.4.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/v0.4.tar.gz
+Version  : 2018w50.3.140000p
+Release  : 131
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w50.3-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w50.3-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -111,7 +111,7 @@ services components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-0.4
+%setup -q -n acrn-hypervisor-acrn-2018w50.3-140000p
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -121,12 +121,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1544731680
+export SOURCE_DATE_EPOCH=1544759351
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1544731680
+export SOURCE_DATE_EPOCH=1544759351
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
@@ -178,10 +178,12 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 /usr/share/acrn/samples/apl-mrb/acrn_guest.service
 /usr/share/acrn/samples/apl-mrb/launch_uos.sh
 /usr/share/acrn/samples/apl-mrb/mrb-env-setup.sh
+/usr/share/acrn/samples/apl-mrb/runC.json
 /usr/share/acrn/samples/apl-mrb/sos_bootargs_debug.txt
 /usr/share/acrn/samples/apl-mrb/sos_bootargs_release.txt
 /usr/share/acrn/samples/nuc/acrn.conf
 /usr/share/acrn/samples/nuc/launch_uos.sh
+/usr/share/acrn/samples/nuc/runC.json
 /usr/share/defaults/telemetrics/acrnprobe.xml
 
 %files dev
