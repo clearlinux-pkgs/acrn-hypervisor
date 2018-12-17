@@ -5,12 +5,13 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2018w50.5.140000p
-Release  : 132
+Release  : 133
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w50.5-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w50.5-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
+Requires: acrn-hypervisor-autostart = %{version}-%{release}
 Requires: acrn-hypervisor-bin = %{version}-%{release}
 Requires: acrn-hypervisor-config = %{version}-%{release}
 Requires: acrn-hypervisor-data = %{version}-%{release}
@@ -46,6 +47,14 @@ Patch3: 0003-makefile-install-debug.patch
 This directory contains configuration files to ignore errors found in
 the build and test process which are known to the developers and for
 now can be safely ignored.
+
+%package autostart
+Summary: autostart components for the acrn-hypervisor package.
+Group: Default
+
+%description autostart
+autostart components for the acrn-hypervisor package.
+
 
 %package bin
 Summary: bin components for the acrn-hypervisor package.
@@ -121,12 +130,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1545006335
+export SOURCE_DATE_EPOCH=1545007479
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1545006335
+export SOURCE_DATE_EPOCH=1545007479
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
@@ -134,6 +143,15 @@ cp doc/LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/doc_LICEN
 cp scripts/kconfig/LICENSE.kconfiglib %{buildroot}/usr/share/package-licenses/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
 cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/acrn-hypervisor/tools_acrn-crashlog_license_header
 %make_install sbl-hypervisor-install hypervisor-install-debug sbl-hypervisor-install-debug
+## install_append content
+mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
+ln -s ../acrnd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/acrnd.service
+mkdir -p %{buildroot}/usr/share/clr-service-restart
+ln -sf /usr/lib/systemd/system/acrnd.service %{buildroot}/usr/share/clr-service-restart/acrnd.service
+mkdir -p %{buildroot}/usr/share/acrn/conf/add
+ln -s ../../samples/apl-mrb/launch_uos.args %{buildroot}/usr/share/acrn/conf/add/vm1.args
+ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/vm1.sh
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -144,6 +162,10 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 /usr/lib/systemd/network/50-acrn.network
 /usr/lib/systemd/network/50-acrn_tap0.netdev
 /usr/lib/systemd/network/50-eth.network
+
+%files autostart
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/multi-user.target.wants/acrnd.service
 
 %files bin
 %defattr(-,root,root,-)
@@ -170,6 +192,8 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 /usr/share/acrn/bios/VSBL.bin
 /usr/share/acrn/bios/VSBL_debug.bin
 /usr/share/acrn/bios/changelog.txt
+/usr/share/acrn/conf/add/vm1.args
+/usr/share/acrn/conf/add/vm1.sh
 /usr/share/acrn/crashlog/40-watchdog.conf
 /usr/share/acrn/crashlog/80-coredump.conf
 /usr/share/acrn/samples/apl-mrb/acrn_guest.service
@@ -182,6 +206,7 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 /usr/share/acrn/samples/nuc/acrn.conf
 /usr/share/acrn/samples/nuc/launch_uos.sh
 /usr/share/acrn/samples/nuc/runC.json
+/usr/share/clr-service-restart/acrnd.service
 /usr/share/defaults/telemetrics/acrnprobe.xml
 
 %files dev
@@ -203,6 +228,7 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 
 %files services
 %defattr(-,root,root,-)
+%exclude /usr/lib/systemd/system/multi-user.target.wants/acrnd.service
 /usr/lib/systemd/system/acrn_guest.service
 /usr/lib/systemd/system/acrnd.service
 /usr/lib/systemd/system/acrnlog.service

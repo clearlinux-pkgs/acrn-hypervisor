@@ -1,0 +1,7 @@
+mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
+ln -s ../acrnd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/acrnd.service
+mkdir -p %{buildroot}/usr/share/clr-service-restart
+ln -sf /usr/lib/systemd/system/acrnd.service %{buildroot}/usr/share/clr-service-restart/acrnd.service
+mkdir -p %{buildroot}/usr/share/acrn/conf/add
+ln -s ../../samples/apl-mrb/launch_uos.args %{buildroot}/usr/share/acrn/conf/add/vm1.args
+ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/vm1.sh
