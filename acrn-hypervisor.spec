@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2018w50.3.140000p
-Release  : 131
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w50.3-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w50.3-140000p.tar.gz
+Version  : 2018w50.5.140000p
+Release  : 132
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w50.5-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2018w50.5-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -111,7 +111,7 @@ services components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2018w50.3-140000p
+%setup -q -n acrn-hypervisor-acrn-2018w50.5-140000p
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -121,12 +121,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1544759351
+export SOURCE_DATE_EPOCH=1545006335
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1544759351
+export SOURCE_DATE_EPOCH=1545006335
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
@@ -139,10 +139,7 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 %defattr(-,root,root,-)
 %exclude /usr/lib/acrn/acrn.efi.map
 %exclude /usr/lib/acrn/acrn.efi.out
-%exclude /usr/lib/acrn/acrn.sbl.map
-%exclude /usr/lib/acrn/acrn.sbl.out
 /usr/lib/acrn/acrn.efi
-/usr/lib/acrn/acrn.sbl
 /usr/lib/systemd/network/50-acrn.netdev
 /usr/lib/systemd/network/50-acrn.network
 /usr/lib/systemd/network/50-acrn_tap0.netdev
@@ -176,6 +173,7 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 /usr/share/acrn/crashlog/40-watchdog.conf
 /usr/share/acrn/crashlog/80-coredump.conf
 /usr/share/acrn/samples/apl-mrb/acrn_guest.service
+/usr/share/acrn/samples/apl-mrb/launch_uos.args
 /usr/share/acrn/samples/apl-mrb/launch_uos.sh
 /usr/share/acrn/samples/apl-mrb/mrb-env-setup.sh
 /usr/share/acrn/samples/apl-mrb/runC.json
@@ -195,8 +193,6 @@ cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/ac
 %defattr(-,root,root,-)
 /usr/lib/acrn/acrn.efi.map
 /usr/lib/acrn/acrn.efi.out
-/usr/lib/acrn/acrn.sbl.map
-/usr/lib/acrn/acrn.sbl.out
 
 %files license
 %defattr(0644,root,root,0755)
