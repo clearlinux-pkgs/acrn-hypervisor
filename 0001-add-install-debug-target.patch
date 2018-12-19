@@ -1,31 +1,38 @@
-From 017c7440431ceba7db32f268089ad4a1ea7e1c4a Mon Sep 17 00:00:00 2001
+From d0f368de3346046cec06bfff79e223c309c6846d Mon Sep 17 00:00:00 2001
 From: Alek Du <alek.du@intel.com>
-Date: Fri, 7 Dec 2018 09:18:42 +0000
-Subject: [PATCH] add install debug target
+Date: Wed, 19 Dec 2018 13:06:37 +0000
+Subject: [PATCH 1/2] add install debug target
 
-Rebased according to 2018ww49.5 acrn release.
+Rebased according to 2018ww51.2 acrn release.
 
 Signed-off-by: Alek Du <alek.du@intel.com>
 ---
- hypervisor/Makefile | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ efi-stub/Makefile   | 4 ++++
+ hypervisor/Makefile | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index bc68c15..989cf85 100644
---- a/hypervisor/Makefile
-+++ b/hypervisor/Makefile
-@@ -282,11 +282,19 @@ efi: $(HV_OBJDIR)/$(HV_FILE).bin
+diff --git a/efi-stub/Makefile b/efi-stub/Makefile
+index f5390ca..da42a7d 100644
+--- a/efi-stub/Makefile
++++ b/efi-stub/Makefile
+@@ -89,6 +89,10 @@ all: $(EFIBIN)
+ install: $(EFIBIN) install-conf
+ 	install -D $(EFIBIN) $(DESTDIR)/usr/lib/acrn/$(HV_FILE).efi
  
- install: efi
- 	make -C bsp/uefi/efi HV_OBJDIR=$(HV_OBJDIR) install
-+
 +install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
 +	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).efi.out
 +	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).efi.map
- endif
++
+ $(EFIBIN): $(BOOT)
  
+ $(EFI_OBJDIR)/boot.efi: $(EFI_OBJDIR)/boot.so
+diff --git a/hypervisor/Makefile b/hypervisor/Makefile
+index c9e88ba..f9a002e 100644
+--- a/hypervisor/Makefile
++++ b/hypervisor/Makefile
+@@ -279,6 +279,10 @@ all: lib $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
  ifeq ($(CONFIG_PLATFORM_SBL),y)
- install: $(HV_OBJDIR)/$(HV_FILE).32.out
+ install: lib $(HV_OBJDIR)/$(HV_FILE).32.out
  	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl
 +
 +install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
@@ -35,5 +42,5 @@ index bc68c15..989cf85 100644
  
  .PHONY: header
 -- 
-2.19.1
+2.19.2
 

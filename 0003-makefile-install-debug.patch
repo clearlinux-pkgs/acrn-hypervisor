@@ -1,29 +1,33 @@
-From 2fdd6d9a21299db3df6227a64ae8d1956fe8ae5f Mon Sep 17 00:00:00 2001
-From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
-Date: Tue, 9 Oct 2018 15:28:30 -0500
-Subject: [PATCH] makefile: install-debug
+From 8cfc0cdbcd2931d335abefe93dc441527a008c3a Mon Sep 17 00:00:00 2001
+From: Alek Du <alek.du@intel.com>
+Date: Wed, 19 Dec 2018 13:14:12 +0000
+Subject: [PATCH 2/2] makefile: install-debug
 
+Signed-off-by: Alek Du <alek.du@intel.com>
 ---
- Makefile | 6 ++++++
- 1 file changed, 6 insertions(+)
+ Makefile | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index e45451d8..faf7a3c4 100644
+index e7b7ffa..0aa6bd7 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -52,6 +52,12 @@ hypervisor-install:
- sbl-hypervisor-install:
- 	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl PLATFORM=sbl RELEASE=$(RELEASE) install
+@@ -87,7 +87,14 @@ ifeq ($(PLATFORM),uefi)
+ endif
  
+ sbl-hypervisor-install:
+-	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl BOARD=$(BOARD) FIRMWARE=$(FIRMWARE) RELEASE=$(RELEASE) install
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) install
++
 +hypervisor-install-debug:
-+	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT) PLATFORM=$(PLATFORM) RELEASE=$(RELEASE) install-debug
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT) BOARD=$(BOARD) FIRMWARE=$(FIRMWARE) RELEASE=$(RELEASE)
++	make -C $(T)/efi-stub HV_OBJDIR=$(HV_OUT) EFI_OBJDIR=$(EFI_OUT) all install-debug
 +
 +sbl-hypervisor-install-debug:
 +	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl PLATFORM=sbl RELEASE=$(RELEASE) install-debug
-+
+ 
  devicemodel-install:
  	make -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) install
- 
 -- 
-2.19.1
+2.19.2
 
