@@ -1,3 +1,4 @@
 #0001-add-install-debug-target.patch
 #0002-add-RELEASE-variable-to-make-command.patch
 0003-makefile-install-debug.patch
+0004-Makefile-specify-board-firmware.patch

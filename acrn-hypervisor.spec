@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2019w01.5.170000p
-Release  : 140
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w01.5-170000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w01.5-170000p.tar.gz
+Version  : 2019w02.2.150000p
+Release  : 141
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w02.2-150000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w02.2-150000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -40,6 +40,7 @@ BuildRequires : telemetrics-client-dev
 %define __strip /bin/true
 %define debug_package %{nil}
 Patch1: 0003-makefile-install-debug.patch
+Patch2: 0004-Makefile-specify-board-firmware.patch
 
 %description
 This directory contains configuration files to ignore errors found in
@@ -118,20 +119,21 @@ services components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2019w01.5-170000p
+%setup -q -n acrn-hypervisor-acrn-2019w02.2-150000p
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546595307
+export SOURCE_DATE_EPOCH=1546958635
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1546595307
+export SOURCE_DATE_EPOCH=1546958635
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE

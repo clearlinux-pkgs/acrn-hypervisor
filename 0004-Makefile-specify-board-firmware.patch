@@ -1,0 +1,26 @@
+commit 83034b71510c6b6991180afbcb8c2ccca8ac9b0c
+Author: Tw <wei.tan@intel.com>
+Date:   Thu Dec 20 11:55:05 2018 +0800
+
+    Makefile: specify BOARD&FIRMWARE in sb-hypervisor-install
+    
+    BOARD&FIRMWARE are wrong When 'make sbl-hypervisor-install' w/o parameters
+    due to default platform is uefi. So set them clearly.
+    
+    Tracked-On: #1995
+    Signed-off-by: Tw <wei.tan@intel.com>
+    Reviewed-by: Binbin Wu <binbin.wu@intel.com>
+
+diff --git a/Makefile b/Makefile
+index 2dd17928..87eb0c93 100644
+--- a/Makefile
++++ b/Makefile
+@@ -88,7 +88,7 @@ ifeq ($(FIRMWARE),uefi)
+ endif
+ 
+ sbl-hypervisor-install:
+-	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl BOARD=$(BOARD) FIRMWARE=$(FIRMWARE) RELEASE=$(RELEASE) install
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) install
+ 
+ devicemodel-install:
+ 	make -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) install
