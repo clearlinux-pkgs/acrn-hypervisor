@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2019w03.4.150000p
-Release  : 146
+Release  : 147
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w03.4-150000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w03.4-150000p.tar.gz
 Summary  : No detailed summary available
@@ -39,7 +39,7 @@ BuildRequires : telemetrics-client-dev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
-Patch1: 0003-makefile-install-debug.patch
+Patch1: 0001-makefile-install-debug.patch
 
 %description
 This directory contains configuration files to ignore errors found in
@@ -126,12 +126,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1547722756
+export SOURCE_DATE_EPOCH=1547776634
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1547722756
+export SOURCE_DATE_EPOCH=1547776634
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
