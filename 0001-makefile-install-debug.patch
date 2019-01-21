@@ -1,28 +1,51 @@
-From 8cfc0cdbcd2931d335abefe93dc441527a008c3a Mon Sep 17 00:00:00 2001
+From d3ff339b67e0bb849b692037a74c5400056e4e4a Mon Sep 17 00:00:00 2001
 From: Alek Du <alek.du@intel.com>
 Date: Wed, 19 Dec 2018 13:14:12 +0000
-Subject: [PATCH 2/2] makefile: install-debug
+Subject: [PATCH] makefile: add install-debug and improve rules
 
-Signed-off-by: Alek Du <alek.du@intel.com>
+Some rules where executed twice bringing more time to the build time.
 ---
- Makefile | 9 ++++++++-
- 1 file changed, 7 insertions(+), 0 deletion(-)
+ Makefile | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 87eb0c93..010e1d74 100644
+index 34411419..334fffd5 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -90,6 +90,13 @@ endif
- sbl-hypervisor-install:
- 	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) install
+@@ -57,8 +57,8 @@ sbl-hypervisor:
+ 	@mkdir -p $(HV_OUT)-sbl/apl-mrb $(HV_OUT)-sbl/up2
+ 	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/apl-mrb BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) clean
+ 	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/apl-mrb BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE)
+-	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/up2 BOARD=up2 FIRMWARE=sbl RELEASE=$(RELEASE) clean
+-	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/up2 BOARD=up2 FIRMWARE=sbl RELEASE=$(RELEASE)
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/up2     BOARD=up2     FIRMWARE=sbl RELEASE=$(RELEASE) clean
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/up2     BOARD=up2     FIRMWARE=sbl RELEASE=$(RELEASE)
  
+ devicemodel: tools
+ 	make -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) clean
+@@ -85,13 +85,19 @@ ifeq ($(FIRMWARE),sbl)
+ 	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT) BOARD=$(BOARD) FIRMWARE=$(FIRMWARE) RELEASE=$(RELEASE) install
+ endif
+ ifeq ($(FIRMWARE),uefi)
+-	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT) BOARD=$(BOARD) FIRMWARE=$(FIRMWARE) RELEASE=$(RELEASE)
+-	make -C $(T)/efi-stub HV_OBJDIR=$(HV_OUT) EFI_OBJDIR=$(EFI_OUT) all install
++	make -C $(T)/efi-stub   HV_OBJDIR=$(HV_OUT) EFI_OBJDIR=$(EFI_OUT) install
+ endif
+ 
+ sbl-hypervisor-install:
+ 	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/apl-mrb BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) install
+-	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/up2 BOARD=up2 FIRMWARE=sbl RELEASE=$(RELEASE) install
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/up2     BOARD=up2     FIRMWARE=sbl RELEASE=$(RELEASE) install
++
 +hypervisor-install-debug:
-+	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT) BOARD=$(BOARD) FIRMWARE=$(FIRMWARE) RELEASE=$(RELEASE)
-+	make -C $(T)/efi-stub HV_OBJDIR=$(HV_OUT) EFI_OBJDIR=$(EFI_OUT) all install-debug
++	make -C $(T)/efi-stub HV_OBJDIR=$(HV_OUT) EFI_OBJDIR=$(EFI_OUT) install-debug
 +
 +sbl-hypervisor-install-debug:
-+	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl PLATFORM=sbl RELEASE=$(RELEASE) install-debug
-+
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/apl-mrb BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) install-debug
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/up2     BOARD=up2     FIRMWARE=sbl RELEASE=$(RELEASE) install-debug
+ 
  devicemodel-install:
  	make -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) install
- 
+-- 
+2.20.0
+
