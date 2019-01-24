@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2019w04.4.140000p
-Release  : 152
+Release  : 153
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w04.4-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w04.4-140000p.tar.gz
 Summary  : No detailed summary available
@@ -126,12 +126,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1548358683
+export SOURCE_DATE_EPOCH=1548359186
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1548358683
+export SOURCE_DATE_EPOCH=1548359186
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
@@ -155,11 +155,11 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 %exclude /usr/lib/acrn/acrn.efi.out
 %exclude /usr/lib/acrn/acrn.sbl.map
 %exclude /usr/lib/acrn/acrn.sbl.out
+%exclude /usr/lib/acrn/acrn.up2.sbl.map
+%exclude /usr/lib/acrn/acrn.up2.sbl.out
 /usr/lib/acrn/acrn.efi
 /usr/lib/acrn/acrn.sbl
 /usr/lib/acrn/acrn.up2.sbl
-/usr/lib/acrn/acrn.up2.sbl.map
-/usr/lib/acrn/acrn.up2.sbl.out
 /usr/lib/systemd/network/50-acrn.netdev
 /usr/lib/systemd/network/50-acrn.network
 /usr/lib/systemd/network/50-acrn_tap0.netdev
@@ -225,6 +225,8 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 /usr/lib/acrn/acrn.efi.out
 /usr/lib/acrn/acrn.sbl.map
 /usr/lib/acrn/acrn.sbl.out
+/usr/lib/acrn/acrn.up2.sbl.map
+/usr/lib/acrn/acrn.up2.sbl.out
 
 %files license
 %defattr(0644,root,root,0755)
