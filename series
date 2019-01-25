@@ -1,1 +1,3 @@
-2404.patch
+#2404.patch
+#this is only for beta branch 150000* tag
+0001-makefile-install-debug.patch
