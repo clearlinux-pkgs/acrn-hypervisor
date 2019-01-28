@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2019w05.1.150000p
-Release  : 156
+Release  : 157
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w05.1-150000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w05.1-150000p.tar.gz
 Summary  : No detailed summary available
@@ -39,7 +39,13 @@ BuildRequires : telemetrics-client-dev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
-Patch1: 0001-makefile-install-debug.patch
+Patch1: 0001-Makefile-eliminate-mistakes-due-to-deprecated-PLATFO.patch
+Patch2: 0002-Makefile-support-SBL-binary-for-E2E-build.patch
+Patch3: 0003-Makefile-add-rules-for-installing-debug-information.patch
+Patch4: 0004-Use-MAKE-when-recursing.patch
+Patch5: 0005-hv-Makefile-add-the-dependency-of-LIB_FLAGS.patch
+Patch6: 0006-Makefile-add-missing-dependency.patch
+Patch7: 0007-Makefile-add-install-samples-up2.patch
 
 %description
 This directory contains configuration files to ignore errors found in
@@ -120,18 +126,24 @@ services components for the acrn-hypervisor package.
 %prep
 %setup -q -n acrn-hypervisor-acrn-2019w05.1-150000p
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1548663934
+export SOURCE_DATE_EPOCH=1548708298
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1548663934
+export SOURCE_DATE_EPOCH=1548708298
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
@@ -155,8 +167,11 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 %exclude /usr/lib/acrn/acrn.efi.out
 %exclude /usr/lib/acrn/acrn.sbl.map
 %exclude /usr/lib/acrn/acrn.sbl.out
+%exclude /usr/lib/acrn/acrn.up2.sbl.map
+%exclude /usr/lib/acrn/acrn.up2.sbl.out
 /usr/lib/acrn/acrn.efi
 /usr/lib/acrn/acrn.sbl
+/usr/lib/acrn/acrn.up2.sbl
 /usr/lib/systemd/network/50-acrn.netdev
 /usr/lib/systemd/network/50-acrn.network
 /usr/lib/systemd/network/50-acrn_tap0.netdev
@@ -205,6 +220,9 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 /usr/share/acrn/samples/nuc/acrn.conf
 /usr/share/acrn/samples/nuc/launch_uos.sh
 /usr/share/acrn/samples/nuc/runC.json
+/usr/share/acrn/samples/up2/launch_uos.sh
+/usr/share/acrn/samples/up2/sos_bootargs_debug.txt
+/usr/share/acrn/samples/up2/sos_bootargs_release.txt
 /usr/share/clr-service-restart/acrnd.service
 /usr/share/defaults/telemetrics/acrnprobe.xml
 
@@ -219,6 +237,8 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 /usr/lib/acrn/acrn.efi.out
 /usr/lib/acrn/acrn.sbl.map
 /usr/lib/acrn/acrn.sbl.out
+/usr/lib/acrn/acrn.up2.sbl.map
+/usr/lib/acrn/acrn.up2.sbl.out
 
 %files license
 %defattr(0644,root,root,0755)
