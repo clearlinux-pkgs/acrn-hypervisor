@@ -1,7 +1,7 @@
-From 294d821bda413223727ab8374f22ad76b28e4cd2 Mon Sep 17 00:00:00 2001
+From 35eef2956da6dc8e8597f67870446edde312482a Mon Sep 17 00:00:00 2001
 From: Tw <wei.tan@intel.com>
 Date: Thu, 24 Jan 2019 13:54:49 +0800
-Subject: [PATCH 5/5] Makefile: add missing dependency
+Subject: [PATCH 6/6] Makefile: add missing dependency
 
 commit 6584b5476e10524acc67d72deae479a068f7302b master
 
@@ -17,12 +17,12 @@ Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index 53cdfc50..22b49a3a 100644
+index f7f76d29..beb04b31 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
 @@ -320,7 +320,9 @@ $(HV_OBJDIR)/$(HV_FILE).bin: $(HV_OBJDIR)/$(HV_FILE).out
  
- $(HV_OBJDIR)/$(HV_FILE).out: $(C_OBJS) $(S_OBJS)
+ $(HV_OBJDIR)/$(HV_FILE).out: $(C_OBJS) $(S_OBJS) $(LIB_FLAGS)
  	${BASH} ${LD_IN_TOOL} $(ARCH_LDSCRIPT_IN) $(ARCH_LDSCRIPT) ${HV_OBJDIR}/.config
 -	$(CC) -Wl,-Map=$(HV_OBJDIR)/$(HV_FILE).map -o $@ $(LDFLAGS) $(ARCH_LDFLAGS) -T$(ARCH_LDSCRIPT) $^ $(LIB_FLAGS)
 +	$(CC) -Wl,-Map=$(HV_OBJDIR)/$(HV_FILE).map -o $@ $(LDFLAGS) $(ARCH_LDFLAGS) -T$(ARCH_LDSCRIPT) $^

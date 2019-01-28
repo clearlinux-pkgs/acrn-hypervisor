@@ -1,7 +1,7 @@
 From 46ed395bc516beb1818a88902277dafc28ace7d4 Mon Sep 17 00:00:00 2001
 From: Tw <wei.tan@intel.com>
 Date: Tue, 18 Dec 2018 13:42:53 +0800
-Subject: [PATCH 1/5] Makefile: eliminate mistakes due to deprecated PLATFORM
+Subject: [PATCH 1/6] Makefile: eliminate mistakes due to deprecated PLATFORM
 
 commit c932faa241af5129e6f096513d04d996b6607be9 master
 

@@ -1,7 +1,7 @@
 From d909107ab74da0770335c7feef0215c2ba1837ce Mon Sep 17 00:00:00 2001
 From: Ross Burton <ross.burton@intel.com>
 Date: Wed, 16 Jan 2019 21:35:20 +0000
-Subject: [PATCH 4/5] Use $(MAKE) when recursing
+Subject: [PATCH 4/6] Use $(MAKE) when recursing
 
 commit 5ba4afcffeaf699102c3f46e19cd38d6ca30d6bb master
 

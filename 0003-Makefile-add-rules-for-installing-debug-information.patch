@@ -1,7 +1,7 @@
 From 2c62ea5c8610506d2547a62a92da2be398d9d9f9 Mon Sep 17 00:00:00 2001
 From: Tw <wei.tan@intel.com>
 Date: Tue, 22 Jan 2019 11:12:53 +0800
-Subject: [PATCH 3/5] Makefile: add rules for installing debug information
+Subject: [PATCH 3/6] Makefile: add rules for installing debug information
 
 commit 862ed16ed74894aa4d5831bc344d5eb91be378f3 master
 

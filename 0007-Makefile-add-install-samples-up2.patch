@@ -1,0 +1,42 @@
+From ce515e1c86365beb3756769c4f304fcbc2c3c6b7 Mon Sep 17 00:00:00 2001
+From: Tw <wei.tan@intel.com>
+Date: Mon, 24 Dec 2018 16:57:28 +0800
+Subject: [PATCH] Makefile: add install-samples-up2
+
+commit e5c12a64d544767dc0a1621d684f6513d24d3920 master
+
+Add a rule to add UP2 related samples in rootfs.
+
+Tracked-On: #1995
+Signed-off-by: Tw <wei.tan@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@intel.com>
+Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+---
+ devicemodel/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/devicemodel/Makefile b/devicemodel/Makefile
+index b928bbd0..96d2e6ff 100644
+--- a/devicemodel/Makefile
++++ b/devicemodel/Makefile
+@@ -157,6 +157,7 @@ PROGRAM := acrn-dm
+ 
+ SAMPLES_NUC := $(wildcard samples/nuc/*)
+ SAMPLES_MRB := $(wildcard samples/apl-mrb/*)
++SAMPLES_UP2 := $(wildcard samples/up2/*)
+ 
+ BIOS_BIN := $(wildcard bios/*)
+ 
+@@ -211,6 +212,9 @@ $(DM_OBJDIR)/%.o: %.c $(HEADERS)
+ install: $(DM_OBJDIR)/$(PROGRAM) install-samples-nuc install-samples-mrb install-bios install-vmcfg install-samples-up2
+ 	install -D --mode=0755 $(DM_OBJDIR)/$(PROGRAM) $(DESTDIR)/usr/bin/$(PROGRAM)
+ 
++install-samples-up2: $(SAMPLES_UP2)
++	install -D -t $(DESTDIR)/usr/share/acrn/samples/up2 $^
++
+ install-samples-nuc: $(SAMPLES_NUC)
+ 	install -D -t $(DESTDIR)/usr/share/acrn/samples/nuc $^
+ 
+-- 
+2.20.0
+

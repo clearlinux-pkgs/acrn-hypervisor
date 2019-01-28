@@ -1,7 +1,7 @@
 From 7a1ac37e13bf221ff49bff0ad08e6b0c94369b15 Mon Sep 17 00:00:00 2001
 From: Tw <wei.tan@intel.com>
 Date: Wed, 16 Jan 2019 10:17:01 +0800
-Subject: [PATCH 2/5] Makefile: support SBL binary for E2E build
+Subject: [PATCH 2/6] Makefile: support SBL binary for E2E build
 
 commit fe35dde42111520d92b7e68ce6475fbb0e4fce60 master
 
