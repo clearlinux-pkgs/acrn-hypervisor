@@ -1,0 +1,91 @@
+From 7a1ac37e13bf221ff49bff0ad08e6b0c94369b15 Mon Sep 17 00:00:00 2001
+From: Tw <wei.tan@intel.com>
+Date: Wed, 16 Jan 2019 10:17:01 +0800
+Subject: [PATCH 2/5] Makefile: support SBL binary for E2E build
+
+commit fe35dde42111520d92b7e68ce6475fbb0e4fce60 master
+
+Currently, we support SBL on two different boards.
+So build and install them all in E2E build.
+
+Tracked-On: #2344
+Signed-off-by: Tw <wei.tan@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@intel.com>
+Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+---
+ Makefile             | 11 +++++++----
+ devicemodel/Makefile |  2 +-
+ hypervisor/Makefile  |  9 +++++++++
+ 3 files changed, 17 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 87eb0c93..a155af36 100644
+--- a/Makefile
++++ b/Makefile
+@@ -54,9 +54,11 @@ ifeq ($(FIRMWARE),uefi)
+ endif
+ 
+ sbl-hypervisor:
+-	@mkdir -p $(HV_OUT)-sbl
+-	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) clean
+-	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE)
++	@mkdir -p $(HV_OUT)-sbl/apl-mrb $(HV_OUT)-sbl/up2
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/apl-mrb BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) clean
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/apl-mrb BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE)
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/up2 BOARD=up2 FIRMWARE=sbl RELEASE=$(RELEASE) clean
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/up2 BOARD=up2 FIRMWARE=sbl RELEASE=$(RELEASE)
+ 
+ devicemodel: tools
+ 	make -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) clean
+@@ -88,7 +90,8 @@ ifeq ($(FIRMWARE),uefi)
+ endif
+ 
+ sbl-hypervisor-install:
+-	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) install
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/apl-mrb BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) install
++	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl/up2 BOARD=up2 FIRMWARE=sbl RELEASE=$(RELEASE) install
+ 
+ devicemodel-install:
+ 	make -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) install
+diff --git a/devicemodel/Makefile b/devicemodel/Makefile
+index 63b7769e..aaeabee6 100644
+--- a/devicemodel/Makefile
++++ b/devicemodel/Makefile
+@@ -208,7 +208,7 @@ $(DM_OBJDIR)/%.o: %.c $(HEADERS)
+ 	[ ! -e $@ ] && mkdir -p $(dir $@); \
+ 	$(CC) $(CFLAGS) -c $< -o $@
+ 
+-install: $(DM_OBJDIR)/$(PROGRAM) install-samples-nuc install-samples-mrb install-bios install-vmcfg
++install: $(DM_OBJDIR)/$(PROGRAM) install-samples-nuc install-samples-mrb install-bios install-vmcfg install-samples-up2
+ 	install -D --mode=0755 $(DM_OBJDIR)/$(PROGRAM) $(DESTDIR)/usr/bin/$(PROGRAM)
+ 
+ install-samples-nuc: $(SAMPLES_NUC)
+diff --git a/hypervisor/Makefile b/hypervisor/Makefile
+index 879028c0..53cdfc50 100644
+--- a/hypervisor/Makefile
++++ b/hypervisor/Makefile
+@@ -278,12 +278,21 @@ all: lib $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
+ 
+ ifeq ($(CONFIG_PLATFORM_SBL),y)
+ install: lib $(HV_OBJDIR)/$(HV_FILE).32.out
++ifeq ($(BOARD),up2)
++	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).up2.sbl
++else
+ 	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl
++endif
+ 
+ install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
++ifeq ($(BOARD),up2)
++	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).up2.sbl.out
++	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).up2.sbl.map
++else
+ 	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl.out
+ 	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl.map
+ endif
++endif
+ 
+ .PHONY: header
+ header: $(VERSION) $(HV_OBJDIR)/$(HV_CONFIG_H) $(TARGET_ACPI_INFO_HEADER)
+-- 
+2.20.0
+

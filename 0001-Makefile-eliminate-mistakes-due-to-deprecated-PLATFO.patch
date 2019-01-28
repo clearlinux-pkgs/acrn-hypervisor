@@ -1,0 +1,54 @@
+From 46ed395bc516beb1818a88902277dafc28ace7d4 Mon Sep 17 00:00:00 2001
+From: Tw <wei.tan@intel.com>
+Date: Tue, 18 Dec 2018 13:42:53 +0800
+Subject: [PATCH 1/5] Makefile: eliminate mistakes due to deprecated PLATFORM
+
+commit c932faa241af5129e6f096513d04d996b6607be9 master
+
+PLATFORM is deprecated, let's use it only for board detection
+
+Tracked-On: #1995
+Signed-off-by: Tw <wei.tan@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@intel.com>
+Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+---
+ Makefile | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 9eeda63f..87eb0c93 100644
+--- a/Makefile
++++ b/Makefile
+@@ -16,6 +16,7 @@ BOARD ?= apl-mrb
+ else ifeq ($(PLATFORM),uefi)
+ BOARD ?= apl-nuc
+ endif
++undefine PLATFORM
+ 
+ ifndef BOARD
+ $(error BOARD must be set (apl-mrb, apl-nuc, cb2_dnv, nuc6cayh)
+@@ -47,7 +48,7 @@ all: hypervisor devicemodel tools
+ hypervisor:
+ 	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT) BOARD=$(BOARD) FIRMWARE=$(FIRMWARE) RELEASE=$(RELEASE) clean
+ 	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT) BOARD=$(BOARD) FIRMWARE=$(FIRMWARE) RELEASE=$(RELEASE)
+-ifeq ($(PLATFORM),uefi)
++ifeq ($(FIRMWARE),uefi)
+ 	echo "building hypervisor as EFI executable..."
+ 	make -C $(T)/efi-stub HV_OBJDIR=$(HV_OUT) EFI_OBJDIR=$(EFI_OUT)
+ endif
+@@ -78,10 +79,10 @@ clean:
+ install: hypervisor-install devicemodel-install tools-install
+ 
+ hypervisor-install:
+-ifeq ($(PLATFORM),sbl)
++ifeq ($(FIRMWARE),sbl)
+ 	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT) BOARD=$(BOARD) FIRMWARE=$(FIRMWARE) RELEASE=$(RELEASE) install
+ endif
+-ifeq ($(PLATFORM),uefi)
++ifeq ($(FIRMWARE),uefi)
+ 	make -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT) BOARD=$(BOARD) FIRMWARE=$(FIRMWARE) RELEASE=$(RELEASE)
+ 	make -C $(T)/efi-stub HV_OBJDIR=$(HV_OUT) EFI_OBJDIR=$(EFI_OUT) all install
+ endif
+-- 
+2.20.0
+
