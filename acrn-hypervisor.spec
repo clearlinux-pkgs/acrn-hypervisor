@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2019w05.1.150000p
-Release  : 157
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w05.1-150000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w05.1-150000p.tar.gz
+Version  : 2019w05.2.140000p
+Release  : 158
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w05.2-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w05.2-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -39,13 +39,6 @@ BuildRequires : telemetrics-client-dev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
-Patch1: 0001-Makefile-eliminate-mistakes-due-to-deprecated-PLATFO.patch
-Patch2: 0002-Makefile-support-SBL-binary-for-E2E-build.patch
-Patch3: 0003-Makefile-add-rules-for-installing-debug-information.patch
-Patch4: 0004-Use-MAKE-when-recursing.patch
-Patch5: 0005-hv-Makefile-add-the-dependency-of-LIB_FLAGS.patch
-Patch6: 0006-Makefile-add-missing-dependency.patch
-Patch7: 0007-Makefile-add-install-samples-up2.patch
 
 %description
 This directory contains configuration files to ignore errors found in
@@ -124,26 +117,19 @@ services components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2019w05.1-150000p
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
+%setup -q -n acrn-hypervisor-acrn-2019w05.2-140000p
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1548708298
+export SOURCE_DATE_EPOCH=1548766171
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1548708298
+export SOURCE_DATE_EPOCH=1548766171
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
@@ -218,6 +204,7 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 /usr/share/acrn/samples/apl-mrb/sos_bootargs_debug.txt
 /usr/share/acrn/samples/apl-mrb/sos_bootargs_release.txt
 /usr/share/acrn/samples/nuc/acrn.conf
+/usr/share/acrn/samples/nuc/launch_hard_rt_vm.sh
 /usr/share/acrn/samples/nuc/launch_uos.sh
 /usr/share/acrn/samples/nuc/runC.json
 /usr/share/acrn/samples/up2/launch_uos.sh
