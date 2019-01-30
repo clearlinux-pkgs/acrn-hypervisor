@@ -1,8 +1,0 @@
-#this is only for beta branch 150000* tag
-#0001-Makefile-eliminate-mistakes-due-to-deprecated-PLATFO.patch
-#0002-Makefile-support-SBL-binary-for-E2E-build.patch
-#0003-Makefile-add-rules-for-installing-debug-information.patch
-#0004-Use-MAKE-when-recursing.patch
-#0005-hv-Makefile-add-the-dependency-of-LIB_FLAGS.patch
-#0006-Makefile-add-missing-dependency.patch
-#0007-Makefile-add-install-samples-up2.patch
