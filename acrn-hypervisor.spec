@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2019w09.2.140000p
-Release  : 166
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w09.2-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w09.2-140000p.tar.gz
+Version  : 2019w09.5.140000p
+Release  : 167
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w09.5-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w09.5-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -117,19 +117,19 @@ services components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2019w09.2-140000p
+%setup -q -n acrn-hypervisor-acrn-2019w09.5-140000p
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1551188222
+export SOURCE_DATE_EPOCH=1551446736
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1551188222
+export SOURCE_DATE_EPOCH=1551446736
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
@@ -153,11 +153,11 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 %exclude /usr/lib/acrn/acrn.efi.out
 %exclude /usr/lib/acrn/acrn.sbl.map
 %exclude /usr/lib/acrn/acrn.sbl.out
-%exclude /usr/lib/acrn/acrn.up2.sbl.map
-%exclude /usr/lib/acrn/acrn.up2.sbl.out
+/usr/lib/acrn/acrn.apl-up2.sbl
+/usr/lib/acrn/acrn.apl-up2.sbl.map
+/usr/lib/acrn/acrn.apl-up2.sbl.out
 /usr/lib/acrn/acrn.efi
 /usr/lib/acrn/acrn.sbl
-/usr/lib/acrn/acrn.up2.sbl
 /usr/lib/systemd/network/50-acrn.netdev
 /usr/lib/systemd/network/50-acrn.network
 /usr/lib/systemd/network/50-acrn_tap0.netdev
@@ -188,6 +188,8 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 %files data
 %defattr(-,root,root,-)
 /usr/share/acrn/bios/MD5SUM
+/usr/share/acrn/bios/OVMF.fd
+/usr/share/acrn/bios/OVMF_debug.fd
 /usr/share/acrn/bios/SHA512SUM
 /usr/share/acrn/bios/VSBL.bin
 /usr/share/acrn/bios/VSBL_debug.bin
@@ -224,8 +226,6 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 /usr/lib/acrn/acrn.efi.out
 /usr/lib/acrn/acrn.sbl.map
 /usr/lib/acrn/acrn.sbl.out
-/usr/lib/acrn/acrn.up2.sbl.map
-/usr/lib/acrn/acrn.up2.sbl.out
 
 %files license
 %defattr(0644,root,root,0755)
