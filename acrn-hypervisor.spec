@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2019w19.1.140000p
-Release  : 193
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w19.1-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w19.1-140000p.tar.gz
+Version  : 2019w19.2.140000p
+Release  : 194
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w19.2-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w19.2-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -127,20 +127,20 @@ staticdev components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2019w19.1-140000p
+%setup -q -n acrn-hypervisor-acrn-2019w19.2-140000p
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1557138738
+export SOURCE_DATE_EPOCH=1557239574
 export LDFLAGS="${LDFLAGS} -fno-lto"
 make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1557138738
+export SOURCE_DATE_EPOCH=1557239574
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
@@ -225,6 +225,7 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 /usr/share/acrn/samples/nuc/acrn.conf
 /usr/share/acrn/samples/nuc/launch_hard_rt_vm.sh
 /usr/share/acrn/samples/nuc/launch_uos.sh
+/usr/share/acrn/samples/nuc/launch_vxworks.sh
 /usr/share/acrn/samples/nuc/launch_zephyr.sh
 /usr/share/acrn/samples/nuc/runC.json
 /usr/share/clr-service-restart/acrnd.service
