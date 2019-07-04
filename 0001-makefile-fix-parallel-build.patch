@@ -1,21 +1,56 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
-Date: Tue, 2 Jul 2019 01:14:51 -0500
+Date: Tue, 2 Jul 2019 01:42:24 -0500
 Subject: [PATCH] makefile: fix parallel build
 
 Since 9c81f4c32c1f ("hv:build library to lib_mod.a"), the parallel build
 system was broken. You cannot use "make -j #" to build ACRN.
 
 To fix this we need to declare explicit rules for the files to be built.
+
+Also remove "$(LIB_FLAGS): lib " and " MOD_DEPS " since they are
+redundancy after this change.
+
+Tracked-On: projectacrn#3351
+Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
 ---
- hypervisor/Makefile | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ hypervisor/Makefile | 42 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 13 deletions(-)
 
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index 0fbac5a9..c824c353 100644
+index 0fbac5a9..0e5d6316 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
-@@ -385,21 +385,45 @@ header: $(VERSION) $(HV_OBJDIR)/$(HV_CONFIG_H) $(TARGET_ACPI_INFO_HEADER)
+@@ -295,15 +295,6 @@ endif
+ PRE_BUILD_SRCS += pre_build/static_checks.c
+ PRE_BUILD_OBJS := $(patsubst %.c,$(HV_OBJDIR)/%.o,$(PRE_BUILD_SRCS))
+ 
+-MOD_DEPS += lib-mod
+-MOD_DEPS += boot-mod
+-MOD_DEPS += hw-mod
+-MOD_DEPS += vp-base-mod
+-MOD_DEPS += vp-dm-mod
+-MOD_DEPS += vp-trusty-mod
+-MOD_DEPS += vp-hcall-mod
+-MOD_DEPS += lib
+-MOD_DEPS += sys-init-mod
+ MODULES += $(LIB_MOD)
+ MODULES += $(BOOT_MOD)
+ MODULES += $(HW_MOD)
+@@ -356,10 +347,10 @@ else
+ endif
+ 
+ .PHONY: all
+-all: pre_build $(MOD_DEPS) $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
++all: pre_build $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
+ 
+ ifeq ($(FIRMWARE),sbl)
+-install: $(MOD_DEPS) $(HV_OBJDIR)/$(HV_FILE).32.out
++install: $(HV_OBJDIR)/$(HV_FILE).32.out
+ ifeq ($(BOARD),apl-up2)
+ 	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).apl-up2.sbl
+ else
+@@ -385,21 +376,44 @@ header: $(VERSION) $(HV_OBJDIR)/$(HV_CONFIG_H) $(TARGET_ACPI_INFO_HEADER)
  .PHONY: lib-mod boot-mod hw-mod vp-base-mod vp-dm-mod vp-trusty-mod vp-hcall-mod sys-init-mod
  lib-mod: $(LIB_C_OBJS) $(LIB_S_OBJS)
  	$(AR) $(ARFLAGS) $(LIB_MOD) $(LIB_C_OBJS) $(LIB_S_OBJS)
@@ -57,11 +92,10 @@ index 0fbac5a9..c824c353 100644
  
 +$(SYS_INIT_MOD): sys-init-mod
 +
-+
  .PHONY: lib
  lib: $(SUB_MAKEFILES)
  
-@@ -409,6 +433,10 @@ $(SUB_MAKEFILES): header
+@@ -409,6 +423,10 @@ $(SUB_MAKEFILES): header
  		$(MAKE) -f $$Makefile MKFL_NAME=$$Makefile; \
  	done
  
@@ -72,6 +106,15 @@ index 0fbac5a9..c824c353 100644
  $(HV_OBJDIR)/$(HV_FILE).32.out: $(HV_OBJDIR)/$(HV_FILE).out
  	$(OBJCOPY) -S --section-alignment=0x1000 -O elf32-i386 $< $@
  
+@@ -420,8 +438,6 @@ $(HV_OBJDIR)/$(HV_FILE).out: $(MODULES)
+ 	$(CC) -Wl,-Map=$(HV_OBJDIR)/$(HV_FILE).map -o $@ $(LDFLAGS) $(ARCH_LDFLAGS) -T$(ARCH_LDSCRIPT) \
+ 		-Wl,--start-group $^ -Wl,--end-group
+ 
+-$(LIB_FLAGS): lib
+-
+ .PHONY: clean
+ clean:
+ 	rm -f $(VERSION)
 -- 
 https://clearlinux.org
 
