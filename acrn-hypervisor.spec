@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2019w28.3.140000p
-Release  : 220
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w28.3-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w28.3-140000p.tar.gz
+Version  : 2019w29.3.140000p
+Release  : 221
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w29.3-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w29.3-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -42,7 +42,6 @@ BuildRequires : telemetrics-client-dev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
-Patch1: 0002-tools-acrn-manager-fix-ACRN-manager-headers-install.patch
 
 %description
 This directory contains configuration files to ignore errors found in
@@ -131,15 +130,14 @@ staticdev components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2019w28.3-140000p
-%patch1 -p1
+%setup -q -n acrn-hypervisor-acrn-2019w29.3-140000p
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1562879960
+export SOURCE_DATE_EPOCH=1563478554
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$CFLAGS -fno-lto "
@@ -149,7 +147,7 @@ make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=‚Äù%{version}_%{release}‚
 
 
 %install
-export SOURCE_DATE_EPOCH=1562879960
+export SOURCE_DATE_EPOCH=1563478554
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
