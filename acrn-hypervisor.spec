@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2019w30.4.140000p
-Release  : 224
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w30.4-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w30.4-140000p.tar.gz
+Version  : 2019w31.5.140000p
+Release  : 225
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w31.5-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w31.5-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -44,9 +44,13 @@ BuildRequires : telemetrics-client-dev
 %define debug_package %{nil}
 
 %description
-This directory contains configuration files to ignore errors found in
-the build and test process which are known to the developers and for
-now can be safely ignored.
+folder structure
+Kconfig		: Select working scenario and target board, configure ACRN hypervisor capabilities and features.
+target		: Get target board information under native Linux environment and generate board_info XML.
+board_config	: Parse board_info XML and scenario XML to generate board related configuration files under hypervisor/arch/x86/configs/$(BOARD)/ folder.
+scenario_config	: Parse board_info XML and scenario XML to generate scenario based VM configuration files under hypervisor/scenarios/$(SCENARIO)/ folder.
+launch_config	: Parse board_info XML, scenario XML and devicemodel param XML to generate launch script for post-launched vm under devicesmodel/samples/$(BOARD)/ folder.
+library		: The folder stores shared software modules or libs for acrn-config offline tool.
 
 %package autostart
 Summary: autostart components for the acrn-hypervisor package.
@@ -130,14 +134,14 @@ staticdev components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2019w30.4-140000p
+%setup -q -n acrn-hypervisor-acrn-2019w31.5-140000p
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564169103
+export SOURCE_DATE_EPOCH=1565025215
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$CFLAGS -fno-lto "
@@ -147,13 +151,13 @@ make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=‚Äù%{version}_%{release}‚
 
 
 %install
-export SOURCE_DATE_EPOCH=1564169103
+export SOURCE_DATE_EPOCH=1565025215
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
 cp doc/LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/doc_LICENSE
-cp scripts/kconfig/LICENSE.kconfiglib %{buildroot}/usr/share/package-licenses/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
-cp tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/acrn-hypervisor/tools_acrn-crashlog_license_header
+cp misc/acrn-config/kconfig/LICENSE.kconfiglib %{buildroot}/usr/share/package-licenses/acrn-hypervisor/misc_acrn-config_kconfig_LICENSE.kconfiglib
+cp misc/tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/acrn-hypervisor/misc_tools_acrn-crashlog_license_header
 %make_install sbl-hypervisor-install hypervisor-install-debug sbl-hypervisor-install-debug
 ## install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
@@ -167,10 +171,7 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 
 %files
 %defattr(-,root,root,-)
-%exclude /usr/lib/acrn/acrn.efi.map
-%exclude /usr/lib/acrn/acrn.efi.out
-%exclude /usr/lib/acrn/acrn.sbl.map
-%exclude /usr/lib/acrn/acrn.sbl.out
+/usr/lib/acrn/acrn.apl-nuc.32.out
 /usr/lib/acrn/acrn.apl-up2.sbl
 /usr/lib/acrn/acrn.apl-up2.sbl.map
 /usr/lib/acrn/acrn.apl-up2.sbl.out
@@ -256,8 +257,8 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/acrn-hypervisor/LICENSE
 /usr/share/package-licenses/acrn-hypervisor/doc_LICENSE
-/usr/share/package-licenses/acrn-hypervisor/scripts_kconfig_LICENSE.kconfiglib
-/usr/share/package-licenses/acrn-hypervisor/tools_acrn-crashlog_license_header
+/usr/share/package-licenses/acrn-hypervisor/misc_acrn-config_kconfig_LICENSE.kconfiglib
+/usr/share/package-licenses/acrn-hypervisor/misc_tools_acrn-crashlog_license_header
 
 %files services
 %defattr(-,root,root,-)
