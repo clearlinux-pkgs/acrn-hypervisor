@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2019w37.4.140000p
-Release  : 234
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w37.4-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w37.4-140000p.tar.gz
+Version  : 2019w38.1.140000p
+Release  : 235
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w38.1-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w38.1-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -26,6 +26,7 @@ BuildRequires : e2fsprogs-dev
 BuildRequires : gdb
 BuildRequires : gnu-efi
 BuildRequires : gnu-efi-dev
+BuildRequires : gnu-efi-staticdev
 BuildRequires : libevent-dev
 BuildRequires : libusb-dev
 BuildRequires : libxml2-dev
@@ -134,14 +135,14 @@ staticdev components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2019w37.4-140000p
+%setup -q -n acrn-hypervisor-acrn-2019w38.1-140000p
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568303841
+export SOURCE_DATE_EPOCH=1568736213
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$CFLAGS -fno-lto "
@@ -151,7 +152,7 @@ make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=‚Äù%{version}_%{release}‚
 
 
 %install
-export SOURCE_DATE_EPOCH=1568303841
+export SOURCE_DATE_EPOCH=1568736213
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
