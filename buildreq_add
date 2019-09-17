@@ -2,6 +2,7 @@
 # picked up automatically. One name per line, no whitespace.
 e2fsprogs-dev
 gnu-efi
+gnu-efi-staticdev
 gnu-efi-dev
 libevent-dev
 libusb-dev
