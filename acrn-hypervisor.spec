@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2019w38.1.140000p
-Release  : 235
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w38.1-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w38.1-140000p.tar.gz
+Version  : 2019w38.3.140000p
+Release  : 236
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w38.3-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w38.3-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -101,14 +101,6 @@ Requires: acrn-hypervisor = %{version}-%{release}
 dev components for the acrn-hypervisor package.
 
 
-%package extras
-Summary: extras components for the acrn-hypervisor package.
-Group: Default
-
-%description extras
-extras components for the acrn-hypervisor package.
-
-
 %package license
 Summary: license components for the acrn-hypervisor package.
 Group: Default
@@ -135,24 +127,24 @@ staticdev components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2019w38.1-140000p
+%setup -q -n acrn-hypervisor-acrn-2019w38.3-140000p
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568736213
+export SOURCE_DATE_EPOCH=1568879008
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$CFLAGS -fno-lto "
 export FFLAGS="$CFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
-make  %{?_smp_mflags} all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
+make  %{?_smp_mflags}  all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
 
 
 %install
-export SOURCE_DATE_EPOCH=1568736213
+export SOURCE_DATE_EPOCH=1568879008
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
 cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
@@ -176,22 +168,21 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 /usr/lib/acrn/acrn.apl-mrb.sbl.sdc.32.out
 /usr/lib/acrn/acrn.apl-mrb.sbl.sdc.map
 /usr/lib/acrn/acrn.apl-mrb.sbl.sdc.out
-/usr/lib/acrn/acrn.apl-nuc.sdc.efi
-/usr/lib/acrn/acrn.apl-nuc.sdc.efi.map
-/usr/lib/acrn/acrn.apl-nuc.sdc.efi.out
-/usr/lib/acrn/acrn.apl-nuc.uefi.sdc.32.out
-/usr/lib/acrn/acrn.apl-nuc.uefi.sdc.map
-/usr/lib/acrn/acrn.apl-nuc.uefi.sdc.out
 /usr/lib/acrn/acrn.apl-up2.sbl.sdc.32.out
 /usr/lib/acrn/acrn.apl-up2.sbl.sdc.map
 /usr/lib/acrn/acrn.apl-up2.sbl.sdc.out
-/usr/lib/acrn/acrn.efi
 /usr/lib/acrn/acrn.kbl-nuc-i7.industry.efi
 /usr/lib/acrn/acrn.kbl-nuc-i7.industry.efi.map
 /usr/lib/acrn/acrn.kbl-nuc-i7.industry.efi.out
 /usr/lib/acrn/acrn.kbl-nuc-i7.uefi.industry.32.out
 /usr/lib/acrn/acrn.kbl-nuc-i7.uefi.industry.map
 /usr/lib/acrn/acrn.kbl-nuc-i7.uefi.industry.out
+/usr/lib/acrn/acrn.nuc6cayh.sdc.efi
+/usr/lib/acrn/acrn.nuc6cayh.sdc.efi.map
+/usr/lib/acrn/acrn.nuc6cayh.sdc.efi.out
+/usr/lib/acrn/acrn.nuc6cayh.uefi.sdc.32.out
+/usr/lib/acrn/acrn.nuc6cayh.uefi.sdc.map
+/usr/lib/acrn/acrn.nuc6cayh.uefi.sdc.out
 /usr/lib/systemd/network/50-acrn.netdev
 /usr/lib/systemd/network/50-acrn.network
 /usr/lib/systemd/network/50-eth.network
@@ -260,11 +251,6 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 /usr/include/acrn/types.h
 /usr/include/acrn/vhm_ioctl_defs.h
 /usr/include/acrn/vmm.h
-
-%files extras
-%defattr(-,root,root,-)
-/usr/lib/acrn/acrn.efi.map
-/usr/lib/acrn/acrn.efi.out
 
 %files license
 %defattr(0644,root,root,0755)
