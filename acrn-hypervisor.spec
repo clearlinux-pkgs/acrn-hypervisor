@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : acrn-hypervisor
-Version  : 2019w41.3.140000p
-Release  : 240
-URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w41.3-140000p.tar.gz
-Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w41.3-140000p.tar.gz
+Version  : 2019w42.1.140000p
+Release  : 241
+URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w42.1-140000p.tar.gz
+Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w42.1-140000p.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-4.0 ISC
@@ -135,14 +135,14 @@ staticdev components for the acrn-hypervisor package.
 
 
 %prep
-%setup -q -n acrn-hypervisor-acrn-2019w41.3-140000p
+%setup -q -n acrn-hypervisor-acrn-2019w42.1-140000p
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570647769
+export SOURCE_DATE_EPOCH=1571166395
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$CFLAGS -fno-lto "
@@ -152,14 +152,14 @@ make  %{?_smp_mflags}  all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}
 
 
 %install
-export SOURCE_DATE_EPOCH=1570647769
+export SOURCE_DATE_EPOCH=1571166395
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/acrn-hypervisor
-cp LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/LICENSE
-cp doc/LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/doc_LICENSE
-cp misc/acrn-config/kconfig/LICENSE.kconfiglib %{buildroot}/usr/share/package-licenses/acrn-hypervisor/misc_acrn-config_kconfig_LICENSE.kconfiglib
-cp misc/acrn-config/library/hypervisor_license %{buildroot}/usr/share/package-licenses/acrn-hypervisor/misc_acrn-config_library_hypervisor_license
-cp misc/tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/acrn-hypervisor/misc_tools_acrn-crashlog_license_header
+cp %{_builddir}/acrn-hypervisor-acrn-2019w42.1-140000p/LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/3cc9b5c24d3ab78578359aa1b98166ee5cf6df9b
+cp %{_builddir}/acrn-hypervisor-acrn-2019w42.1-140000p/doc/LICENSE %{buildroot}/usr/share/package-licenses/acrn-hypervisor/50862f16be94cd4a0162ee82eb55697c5b54c70e
+cp %{_builddir}/acrn-hypervisor-acrn-2019w42.1-140000p/misc/acrn-config/kconfig/LICENSE.kconfiglib %{buildroot}/usr/share/package-licenses/acrn-hypervisor/0256be14ad1f607cb4bd89d716442115dab0294c
+cp %{_builddir}/acrn-hypervisor-acrn-2019w42.1-140000p/misc/acrn-config/library/hypervisor_license %{buildroot}/usr/share/package-licenses/acrn-hypervisor/e769dc34d30330fcb407f27559c817e502fdfb13
+cp %{_builddir}/acrn-hypervisor-acrn-2019w42.1-140000p/misc/tools/acrn-crashlog/license_header %{buildroot}/usr/share/package-licenses/acrn-hypervisor/b63d865a65562d341e07541b47e5b542a3e2ca67
 %make_install sbl-hypervisor-install hypervisor-install-debug sbl-hypervisor-install-debug
 ## install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
@@ -274,11 +274,11 @@ ln -s ../../samples/apl-mrb/launch_uos.sh %{buildroot}/usr/share/acrn/conf/add/v
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/acrn-hypervisor/LICENSE
-/usr/share/package-licenses/acrn-hypervisor/doc_LICENSE
-/usr/share/package-licenses/acrn-hypervisor/misc_acrn-config_kconfig_LICENSE.kconfiglib
-/usr/share/package-licenses/acrn-hypervisor/misc_acrn-config_library_hypervisor_license
-/usr/share/package-licenses/acrn-hypervisor/misc_tools_acrn-crashlog_license_header
+/usr/share/package-licenses/acrn-hypervisor/0256be14ad1f607cb4bd89d716442115dab0294c
+/usr/share/package-licenses/acrn-hypervisor/3cc9b5c24d3ab78578359aa1b98166ee5cf6df9b
+/usr/share/package-licenses/acrn-hypervisor/50862f16be94cd4a0162ee82eb55697c5b54c70e
+/usr/share/package-licenses/acrn-hypervisor/b63d865a65562d341e07541b47e5b542a3e2ca67
+/usr/share/package-licenses/acrn-hypervisor/e769dc34d30330fcb407f27559c817e502fdfb13
 
 %files services
 %defattr(-,root,root,-)
