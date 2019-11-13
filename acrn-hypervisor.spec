@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : acrn-hypervisor
 Version  : 2019w45.5.140000p
-Release  : 249
+Release  : 250
 URL      : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w45.5-140000p.tar.gz
 Source0  : https://github.com/projectacrn/acrn-hypervisor/archive/acrn-2019w45.5-140000p.tar.gz
 Summary  : No detailed summary available
