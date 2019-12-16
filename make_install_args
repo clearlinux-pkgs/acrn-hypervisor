@@ -1,1 +1,1 @@
-sbl-hypervisor-install hypervisor-install-debug sbl-hypervisor-install-debug
+RELEASE=0 sbl-hypervisor-install hypervisor-install-debug sbl-hypervisor-install-debug
