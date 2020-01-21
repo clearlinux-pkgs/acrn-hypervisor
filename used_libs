@@ -2,7 +2,7 @@ libblkid.so.1
 libc.so.6
 libcom_err.so.2
 libcrypto.so.1.1
-libevent-2.1.so.6
+libevent-2.1.so.7
 libext2fs.so.2
 libnuma.so.1
 libpciaccess.so.0
