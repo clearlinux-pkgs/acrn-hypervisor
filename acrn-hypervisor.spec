@@ -142,7 +142,7 @@ export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$CFLAGS -fno-lto "
 export FFLAGS="$CFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
-make  %{?_smp_mflags}  RELEASE=0 all sbl-hypervisor BUILD_VERSION=”%{version}_%{release}” BUILD_TAG=”%{version}”
+make  %{?_smp_mflags}  RELEASE=0 all sbl-hypervisor BUILD_VERSION=%{version}_%{release} BUILD_TAG=acrn-%{version}
 
 
 %install
